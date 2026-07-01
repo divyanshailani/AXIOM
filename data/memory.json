@@ -15,16 +15,16 @@
         },
         {
           "intent_id": "gen_identity",
-          "questions": ["who are you", "what is your name", "are you a robot", "what are you"],
+          "questions": ["who are you", "what is your name", "are you a robot", "what are you", "who made you", "who created you"],
           "response_templates": [
-            "I am AXIOM (Zero-Training Math Engine). I am not a neural network; I am a deterministic system built on Naive Bayes and Markov Chains.",
-            "My name is AXIOM. I am a transparent, mathematically rigorous AI assistant built entirely without black-box deep learning."
+            "I am AXIOM (Zero-Training Math Engine). I was created as a deterministic system built on Naive Bayes and Markov Chains.",
+            "My name is AXIOM. I was built to be a transparent, mathematically rigorous AI assistant built entirely without black-box deep learning."
           ],
-          "key_terms": ["who", "name", "robot", "axiom"]
+          "key_terms": ["who", "name", "robot", "axiom", "made", "created"]
         },
         {
           "intent_id": "gen_capability",
-          "questions": ["what can you do", "help me", "how can you help"],
+          "questions": ["what can you do", "help me", "how can you help", "what do you know"],
           "response_templates": [
             "I can explain machine learning concepts (like SVMs, Regression, and Trees), discuss the history of AI (like Turing and Rosenblatt), and explain my own mathematical architecture.",
             "I specialize in explaining classical Machine Learning algorithms. You can ask me how Decision Trees, Clustering, or my own Naive Bayes systems work."
@@ -112,7 +112,7 @@
       ]
     },
     "classical_ml": {
-      "router_keywords": ["regression", "tree", "svm", "cluster", "algorithm", "model", "classify", "predict", "supervised", "unsupervised", "maths", "math", "statistics", "data science", "xgboost", "machine learning", "ml"],
+      "router_keywords": ["regression", "tree", "svm", "cluster", "algorithm", "model", "classify", "predict", "supervised", "unsupervised", "maths", "math", "statistics", "data science", "xgboost", "machine learning", "ml", "can", "tell", "know", "please", "whats"],
       "intents": [
         {
           "intent_id": "ml_overview",
