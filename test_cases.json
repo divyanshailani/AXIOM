@@ -1,0 +1,63 @@
+[
+  "hey",
+  "hello",
+  "good morning",
+  "how are you",
+  "who are you",
+  "what is your name",
+  "are you a robot",
+  "what can you do",
+  "tell me a joke",
+  "bye",
+  
+  "what is machine learning",
+  "explain classical ml",
+  "what is artificial intelligence",
+  "maths",
+  "algorithms",
+  "data science",
+  
+  "what is linear regression",
+  "how does regression work",
+  "explain ordinary least squares",
+  
+  "what is logistic regression",
+  "explain logistic regression",
+  "how does the sigmoid function work",
+  
+  "what are decision trees",
+  "how do decision trees work",
+  "explain random forests",
+  "what is entropy in a decision tree",
+  "whats xgboost",
+  
+  "what is a support vector machine",
+  "explain svm",
+  "what is a kernel trick",
+  "how does svm classify",
+  
+  "what is clustering",
+  "explain k means clustering",
+  "what is unsupervised learning",
+  "how does k means work",
+  
+  "what is k nearest neighbors",
+  "explain knn",
+  "how does nearest neighbor work",
+  
+  "how do you understand my questions",
+  "what is cosine similarity",
+  "how do you generate sentences",
+  "what is a markov chain",
+  "how do you pick a domain",
+  "what is naive bayes",
+  "how do you work",
+  
+  "who invented the perceptron",
+  "who is alan turing",
+  "what is the turing test",
+  
+  "what are transformers",
+  "how does chatgpt work",
+  "why are you not a neural network"
+]
