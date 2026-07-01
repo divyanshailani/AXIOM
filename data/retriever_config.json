@@ -1,6 +1,7 @@
 {
-  "vectorization": "binary_bow",
-  "similarity_threshold": 0.25,
+  "vectorization": "tf_idf",
+  "similarity_threshold": 0.15,
   "fallback_intent": "unknown",
+  "stopwords": ["the", "a", "is", "what", "how", "does", "do", "you", "your", "me", "about", "to", "in", "of", "and", "are", "explain", "whats"],
   "glove_path": null
 }

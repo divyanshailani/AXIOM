@@ -3,9 +3,10 @@
   "min_word_length": 2,
   "stopwords": ["the", "a", "is", "what", "how", "does", "do", "you", "your", "me", "about"],
   "domain_priors": {
-    "self": 0.25,
+    "chit_chat": 0.20,
     "classical_ml": 0.35,
-    "history": 0.20,
-    "modern_context": 0.20
+    "self": 0.20,
+    "history": 0.15,
+    "modern_context": 0.10
   }
 }

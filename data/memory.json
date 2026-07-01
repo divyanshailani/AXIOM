@@ -1,8 +1,58 @@
 {
-  "memory_version": "1.0",
+  "memory_version": "2.0",
   "domains": {
+    "chit_chat": {
+      "router_keywords": ["hello", "hey", "hi", "good morning", "how are you", "who are you", "what is your name", "are you a robot", "what can you do", "help", "bye", "goodbye", "tell me a joke"],
+      "intents": [
+        {
+          "intent_id": "gen_greeting",
+          "questions": ["hello", "hey", "hi", "good morning", "how are you"],
+          "response_templates": [
+            "Hello! I am AXIOM, a mathematical first-principles AI. How can I help you today?",
+            "Greetings! I am ready to process your questions using classical algorithms."
+          ],
+          "key_terms": ["hello", "hey", "hi", "greetings"]
+        },
+        {
+          "intent_id": "gen_identity",
+          "questions": ["who are you", "what is your name", "are you a robot", "what are you"],
+          "response_templates": [
+            "I am AXIOM (Zero-Training Math Engine). I am not a neural network; I am a deterministic system built on Naive Bayes and Markov Chains.",
+            "My name is AXIOM. I am a transparent, mathematically rigorous AI assistant built entirely without black-box deep learning."
+          ],
+          "key_terms": ["who", "name", "robot", "axiom"]
+        },
+        {
+          "intent_id": "gen_capability",
+          "questions": ["what can you do", "help me", "how can you help"],
+          "response_templates": [
+            "I can explain machine learning concepts (like SVMs, Regression, and Trees), discuss the history of AI (like Turing and Rosenblatt), and explain my own mathematical architecture.",
+            "I specialize in explaining classical Machine Learning algorithms. You can ask me how Decision Trees, Clustering, or my own Naive Bayes systems work."
+          ],
+          "key_terms": ["help", "do", "capability"]
+        },
+        {
+          "intent_id": "gen_joke",
+          "questions": ["tell me a joke", "make me laugh"],
+          "response_templates": [
+            "Why did the Naive Bayes classifier get confused? Because it assumed all the punchlines were independent of the setup!",
+            "I would tell you a joke about a Markov Chain, but it depends entirely on what I just said."
+          ],
+          "key_terms": ["joke", "laugh", "funny"]
+        },
+        {
+          "intent_id": "gen_farewell",
+          "questions": ["bye", "goodbye", "see you later", "quit", "exit"],
+          "response_templates": [
+            "Goodbye! Shutting down the mathematical matrices.",
+            "Farewell! May your vectors always be orthogonal."
+          ],
+          "key_terms": ["bye", "goodbye", "exit"]
+        }
+      ]
+    },
     "self": {
-      "router_keywords": ["you", "yourself", "how do you", "your brain", "your memory"],
+      "router_keywords": ["you", "yourself", "how do you", "your brain", "your memory", "understand"],
       "intents": [
         {
           "intent_id": "self_cosine_similarity",
@@ -14,9 +64,9 @@
           ],
           "response_templates": [
             "I convert your question into a vector using word frequencies. Then I calculate the cosine angle between your vector and every question in my memory. The smallest angle wins.",
-            "Using linear algebra, I measure the cosine similarity between your input vector and my stored knowledge vectors. A smaller angle means a closer match."
+            "Using linear algebra, I measure the cosine similarity between your input TF-IDF vector and my stored knowledge vectors. A smaller angle means a closer match."
           ],
-          "key_terms": ["vector", "cosine", "angle", "similarity", "frequency"]
+          "key_terms": ["vector", "cosine", "angle", "similarity", "frequency", "tfidf"]
         },
         {
           "intent_id": "self_markov_chain",
@@ -54,16 +104,32 @@
             "are you a neural network"
           ],
           "response_templates": [
-            "I am not a neural network. I am a pipeline of classical algorithms. A Naive Bayes router picks a domain, cosine similarity matches your intent, and a Markov chain generates my response.",
-            "My architecture is three layers. First, a Bayesian classifier routes your question. Second, cosine similarity retrieves the closest memory. Third, a probability matrix generates the reply word by word."
+            "I am not a neural network. I am a pipeline of classical algorithms. A Naive Bayes router picks a domain, TF-IDF cosine similarity matches your intent, and a Markov chain generates my response.",
+            "My architecture is three layers. First, a Bayesian classifier routes your question. Second, a TF-IDF vectorizer retrieves the closest memory. Third, a probability matrix generates the reply word by word."
           ],
-          "key_terms": ["pipeline", "naive bayes", "cosine", "markov", "classical", "not neural"]
+          "key_terms": ["pipeline", "naive bayes", "cosine", "markov", "classical", "not neural", "tfidf"]
         }
       ]
     },
     "classical_ml": {
-      "router_keywords": ["regression", "tree", "svm", "cluster", "algorithm", "model", "classify", "predict", "supervised", "unsupervised"],
+      "router_keywords": ["regression", "tree", "svm", "cluster", "algorithm", "model", "classify", "predict", "supervised", "unsupervised", "maths", "math", "statistics", "data science", "xgboost", "machine learning", "ml"],
       "intents": [
+        {
+          "intent_id": "ml_overview",
+          "questions": [
+            "what is machine learning",
+            "explain classical ml",
+            "what is artificial intelligence",
+            "maths",
+            "algorithms",
+            "data science"
+          ],
+          "response_templates": [
+            "Machine Learning is a subset of Artificial Intelligence that uses statistical algorithms to learn patterns from data, rather than relying on explicitly programmed rules.",
+            "Classical ML involves algorithms like Regression, SVMs, and Decision Trees to classify data or predict continuous outcomes using pure mathematics and statistics."
+          ],
+          "key_terms": ["machine learning", "ai", "maths", "algorithms", "data science"]
+        },
         {
           "intent_id": "ml_linear_regression",
           "questions": [
@@ -96,13 +162,15 @@
             "what are decision trees",
             "how do decision trees work",
             "explain random forests",
-            "what is entropy in a decision tree"
+            "what is entropy in a decision tree",
+            "whats xgboost",
+            "explain gradient boosting"
           ],
           "response_templates": [
             "A decision tree splits data at each node by asking a question about a feature. It recursively partitions the space until it reaches a leaf node containing a prediction.",
-            "It creates a flowchart of decisions. At each branch, the algorithm chooses the feature that best separates the data, often using entropy or Gini impurity as a metric."
+            "It creates a flowchart of decisions. Advanced versions like Random Forests use many trees, and algorithms like XGBoost use gradient boosting to sequentially correct errors of previous trees."
           ],
-          "key_terms": ["tree", "split", "node", "entropy", "gini", "impurity", "leaf", "branch"]
+          "key_terms": ["tree", "split", "node", "entropy", "gini", "leaf", "xgboost", "boosting", "forest"]
         },
         {
           "intent_id": "ml_svm",
