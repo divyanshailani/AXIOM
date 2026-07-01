@@ -1,7 +1,7 @@
 {
   "smoothing_alpha": 1.0,
   "min_word_length": 2,
-  "stopwords": ["the", "a", "is", "what", "how", "does", "do", "you", "your", "me", "about"],
+  "stopwords": ["the", "a", "is", "what", "how", "does", "do", "you", "your", "me", "about", "whats"],
   "domain_priors": {
     "chit_chat": 0.20,
     "classical_ml": 0.35,

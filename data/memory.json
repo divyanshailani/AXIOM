@@ -2,7 +2,7 @@
   "memory_version": "2.0",
   "domains": {
     "chit_chat": {
-      "router_keywords": ["hello", "hey", "hi", "good morning", "how are you", "who are you", "what is your name", "are you a robot", "what can you do", "help", "bye", "goodbye", "tell me a joke"],
+      "router_keywords": ["hello", "hey", "hi", "good morning", "how are you", "who are you", "what is your name", "are you a robot", "what can you do", "help", "bye", "goodbye", "tell me a joke", "built", "made", "created", "who", "whats"],
       "intents": [
         {
           "intent_id": "gen_greeting",
@@ -15,12 +15,12 @@
         },
         {
           "intent_id": "gen_identity",
-          "questions": ["who are you", "what is your name", "are you a robot", "what are you", "who made you", "who created you"],
+          "questions": ["who are you", "what is your name", "are you a robot", "what are you", "who made you", "who created you", "who built you"],
           "response_templates": [
             "I am AXIOM (Zero-Training Math Engine). I was created as a deterministic system built on Naive Bayes and Markov Chains.",
             "My name is AXIOM. I was built to be a transparent, mathematically rigorous AI assistant built entirely without black-box deep learning."
           ],
-          "key_terms": ["who", "name", "robot", "axiom", "made", "created"]
+          "key_terms": ["who", "name", "robot", "axiom", "made", "created", "built"]
         },
         {
           "intent_id": "gen_capability",
@@ -112,7 +112,7 @@
       ]
     },
     "classical_ml": {
-      "router_keywords": ["regression", "tree", "svm", "cluster", "algorithm", "model", "classify", "predict", "supervised", "unsupervised", "maths", "math", "statistics", "data science", "xgboost", "machine learning", "ml", "can", "tell", "know", "please", "whats"],
+      "router_keywords": ["regression", "tree", "svm", "cluster", "algorithm", "model", "classify", "predict", "supervised", "unsupervised", "maths", "math", "statistics", "data science", "xgboost", "machine learning", "ml", "can", "tell", "know", "please"],
       "intents": [
         {
           "intent_id": "ml_overview",
@@ -134,7 +134,7 @@
           "intent_id": "ml_linear_regression",
           "questions": [
             "what is linear regression",
-            "how does regression work",
+            "how does regression operate",
             "explain ordinary least squares"
           ],
           "response_templates": [
@@ -148,7 +148,7 @@
           "questions": [
             "what is logistic regression",
             "explain logistic regression",
-            "how does the sigmoid function work"
+            "how does the sigmoid function operate"
           ],
           "response_templates": [
             "Logistic regression predicts probabilities using the sigmoid function, which squeezes any real number into a range between zero and one. It is used for binary classification.",
@@ -160,10 +160,9 @@
           "intent_id": "ml_decision_trees",
           "questions": [
             "what are decision trees",
-            "how do decision trees work",
+            "how do decision trees operate",
             "explain random forests",
             "what is entropy in a decision tree",
-            "whats xgboost",
             "explain gradient boosting"
           ],
           "response_templates": [
@@ -178,7 +177,7 @@
             "what is a support vector machine",
             "explain svm",
             "what is a kernel trick",
-            "how does svm classify"
+            "how does svm operate"
           ],
           "response_templates": [
             "An SVM finds the optimal hyperplane that maximizes the margin between two classes. The data points closest to the boundary are called support vectors, and they define the decision surface.",
@@ -192,7 +191,7 @@
             "what is clustering",
             "explain k means clustering",
             "what is unsupervised learning",
-            "how does k means work"
+            "how does k means operate"
           ],
           "response_templates": [
             "Clustering is unsupervised learning. It groups data points by similarity without predefined labels. K-means iteratively assigns points to the nearest centroid and updates the center.",
@@ -205,7 +204,7 @@
           "questions": [
             "what is k nearest neighbors",
             "explain knn",
-            "how does nearest neighbor work"
+            "how does nearest neighbor operate"
           ],
           "response_templates": [
             "K-nearest neighbors stores all training data and classifies a new point by majority vote of its K closest neighbors in feature space. It is a lazy learner.",
