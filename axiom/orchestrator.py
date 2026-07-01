@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Divyansh Ailani. All Rights Reserved.
+# This file is part of AXIOM and is proprietary and confidential.
+
 import json
 from pathlib import Path
 from dataclasses import dataclass
