@@ -1,0 +1,6 @@
+{
+  "vectorization": "binary_bow",
+  "similarity_threshold": 0.25,
+  "fallback_intent": "unknown",
+  "glove_path": null
+}

@@ -1,0 +1,214 @@
+{
+  "memory_version": "1.0",
+  "domains": {
+    "self": {
+      "router_keywords": ["you", "yourself", "how do you", "your brain", "your memory"],
+      "intents": [
+        {
+          "intent_id": "self_cosine_similarity",
+          "questions": [
+            "how do you understand my questions",
+            "what is cosine similarity",
+            "how do you match intent",
+            "how do you know what i mean"
+          ],
+          "response_templates": [
+            "I convert your question into a vector using word frequencies. Then I calculate the cosine angle between your vector and every question in my memory. The smallest angle wins.",
+            "Using linear algebra, I measure the cosine similarity between your input vector and my stored knowledge vectors. A smaller angle means a closer match."
+          ],
+          "key_terms": ["vector", "cosine", "angle", "similarity", "frequency"]
+        },
+        {
+          "intent_id": "self_markov_chain",
+          "questions": [
+            "how do you generate sentences",
+            "what is a markov chain",
+            "how do you pick the next word",
+            "why do you sound robotic"
+          ],
+          "response_templates": [
+            "I build a probability matrix from my training text. For any given word, I roll a dice weighted by which words usually follow it. I chain these dice rolls until I reach a stopping state.",
+            "My generator uses a Markov chain. I look at the previous one or two words, check my probability matrix, and select the next word based on historical frequency."
+          ],
+          "key_terms": ["markov", "probability", "matrix", "chain", "next word", "frequency"]
+        },
+        {
+          "intent_id": "self_naive_bayes",
+          "questions": [
+            "how do you pick a domain",
+            "what is naive bayes",
+            "how does your router work"
+          ],
+          "response_templates": [
+            "My domain router uses a Naive Bayes classifier. It calculates the probability that your question belongs to each domain based on word frequencies, then sends you to the most likely specialist.",
+            "I classify your intent into a domain using Bayes theorem. I assume each word contributes independently to the probability of a topic."
+          ],
+          "key_terms": ["naive bayes", "classifier", "probability", "domain", "router", "bayes"]
+        },
+        {
+          "intent_id": "self_overview",
+          "questions": [
+            "how do you work",
+            "explain your architecture",
+            "what algorithms power you",
+            "are you a neural network"
+          ],
+          "response_templates": [
+            "I am not a neural network. I am a pipeline of classical algorithms. A Naive Bayes router picks a domain, cosine similarity matches your intent, and a Markov chain generates my response.",
+            "My architecture is three layers. First, a Bayesian classifier routes your question. Second, cosine similarity retrieves the closest memory. Third, a probability matrix generates the reply word by word."
+          ],
+          "key_terms": ["pipeline", "naive bayes", "cosine", "markov", "classical", "not neural"]
+        }
+      ]
+    },
+    "classical_ml": {
+      "router_keywords": ["regression", "tree", "svm", "cluster", "algorithm", "model", "classify", "predict", "supervised", "unsupervised"],
+      "intents": [
+        {
+          "intent_id": "ml_linear_regression",
+          "questions": [
+            "what is linear regression",
+            "how does regression work",
+            "explain ordinary least squares"
+          ],
+          "response_templates": [
+            "Linear regression finds a straight line that minimizes the total squared distance to all observed data points. It assumes a linear relationship between an input feature and a target value.",
+            "It models continuous outcomes by fitting a linear equation. The algorithm adjusts coefficients to minimize the residual sum of squares between predicted and actual values."
+          ],
+          "key_terms": ["linear", "regression", "least squares", "residual", "coefficient", "continuous"]
+        },
+        {
+          "intent_id": "ml_logistic_regression",
+          "questions": [
+            "what is logistic regression",
+            "explain logistic regression",
+            "how does the sigmoid function work"
+          ],
+          "response_templates": [
+            "Logistic regression predicts probabilities using the sigmoid function, which squeezes any real number into a range between zero and one. It is used for binary classification.",
+            "Despite its name, it is a classification algorithm. It applies a logistic function to a linear combination of input features to estimate the probability of a class label."
+          ],
+          "key_terms": ["logistic", "sigmoid", "probability", "binary", "classification", "boundary"]
+        },
+        {
+          "intent_id": "ml_decision_trees",
+          "questions": [
+            "what are decision trees",
+            "how do decision trees work",
+            "explain random forests",
+            "what is entropy in a decision tree"
+          ],
+          "response_templates": [
+            "A decision tree splits data at each node by asking a question about a feature. It recursively partitions the space until it reaches a leaf node containing a prediction.",
+            "It creates a flowchart of decisions. At each branch, the algorithm chooses the feature that best separates the data, often using entropy or Gini impurity as a metric."
+          ],
+          "key_terms": ["tree", "split", "node", "entropy", "gini", "impurity", "leaf", "branch"]
+        },
+        {
+          "intent_id": "ml_svm",
+          "questions": [
+            "what is a support vector machine",
+            "explain svm",
+            "what is a kernel trick",
+            "how does svm classify"
+          ],
+          "response_templates": [
+            "An SVM finds the optimal hyperplane that maximizes the margin between two classes. The data points closest to the boundary are called support vectors, and they define the decision surface.",
+            "Support vector machines map data into a higher dimensional space where a linear separation becomes possible. The kernel trick computes this mapping without explicitly calculating the coordinates."
+          ],
+          "key_terms": ["svm", "hyperplane", "margin", "support vector", "kernel", "trick", "separation"]
+        },
+        {
+          "intent_id": "ml_clustering",
+          "questions": [
+            "what is clustering",
+            "explain k means clustering",
+            "what is unsupervised learning",
+            "how does k means work"
+          ],
+          "response_templates": [
+            "Clustering is unsupervised learning. It groups data points by similarity without predefined labels. K-means iteratively assigns points to the nearest centroid and updates the center.",
+            "K-means begins with random centroids. Each point joins the cluster of its nearest center. The centroids then shift to the mean of their assigned points, repeating until convergence."
+          ],
+          "key_terms": ["clustering", "k-means", "centroid", "unsupervised", "similarity", "convergence", "group"]
+        },
+        {
+          "intent_id": "ml_knn",
+          "questions": [
+            "what is k nearest neighbors",
+            "explain knn",
+            "how does nearest neighbor work"
+          ],
+          "response_templates": [
+            "K-nearest neighbors stores all training data and classifies a new point by majority vote of its K closest neighbors in feature space. It is a lazy learner.",
+            "It makes no assumptions about the underlying data distribution. It simply measures distance, usually Euclidean, between the query point and the stored examples."
+          ],
+          "key_terms": ["knn", "nearest neighbor", "distance", "euclidean", "majority vote", "lazy"]
+        }
+      ]
+    },
+    "history": {
+      "router_keywords": ["who", "when", "history", "invented", "created", "rosenblatt", "turing", "vapnik", "lecun", "hinton"],
+      "intents": [
+        {
+          "intent_id": "hist_perceptron",
+          "questions": [
+            "who invented the perceptron",
+            "what is the perceptron",
+            "when was the perceptron built"
+          ],
+          "response_templates": [
+            "Frank Rosenblatt built the perceptron in 1957 at the Cornell Aeronautical Laboratory. It was an electronic model of a biological neuron and could learn weights from data.",
+            "The perceptron was the first machine learning algorithm that could iteratively adjust its weights based on classification errors. It sparked the first wave of AI optimism."
+          ],
+          "key_terms": ["rosenblatt", "perceptron", "1957", "cornell", "neuron", "weights"]
+        },
+        {
+          "intent_id": "hist_turing",
+          "questions": [
+            "who is alan turing",
+            "what is the turing test",
+            "history of machine intelligence"
+          ],
+          "response_templates": [
+            "Alan Turing proposed the imitation game in 1950. A machine passes if a human cannot distinguish it from another human through text conversation alone.",
+            "Turing asked whether machines can think. He suggested that if a machine behaves indistinguishably from a human, we should grant it intelligence by operational definition."
+          ],
+          "key_terms": ["turing", "imitation game", "1950", "test", "think", "machine"]
+        }
+      ]
+    },
+    "modern_context": {
+      "router_keywords": ["transformer", "attention", "chatgpt", "deep learning", "neural network", "llm", "gpt", "large language"],
+      "intents": [
+        {
+          "intent_id": "mod_transformers",
+          "questions": [
+            "what are transformers",
+            "how does chatgpt work",
+            "what is attention in ai",
+            "explain large language models"
+          ],
+          "response_templates": [
+            "Transformers use a mechanism called self-attention to weigh the importance of every word in a sentence against every other word simultaneously. They process sequences in parallel.",
+            "Unlike my Markov chains, which only look back one or two words, transformers compute relationships across entire paragraphs using attention scores and billions of parameters."
+          ],
+          "key_terms": ["transformer", "attention", "parallel", "parameters", "chatgpt", "unlike me"]
+        },
+        {
+          "intent_id": "mod_vs_classical",
+          "questions": [
+            "why are you not a neural network",
+            "what is the difference between you and chatgpt",
+            "classical ml vs deep learning"
+          ],
+          "response_templates": [
+            "Deep learning uses layered neural networks with millions of learned weights. I use explicit probability matrices and vector geometry. Both are mathematical models, but mine is fully inspectable.",
+            "Neural networks are black boxes. My cosine similarity scores and Markov probability tables are human-readable. You can see exactly why I chose every word."
+          ],
+          "key_terms": ["neural network", "deep learning", "black box", "inspectable", "difference", "parameters"]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "memory_path": "data/memory.json",
+  "conversation_history_length": 2,
+  "enable_explanations": true,
+  "response_format": "rich"
+}
