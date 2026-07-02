@@ -6,9 +6,8 @@ import random
 from pathlib import Path
 
 class TemplateGenerator:
-    def __init__(self, memory_path: Path):
-        with open(memory_path) as f:
-            self.memory = json.load(f)
+    def __init__(self, memory_data: dict):
+        self.memory = memory_data
             
     def generate(self, domain: str, intent_id: str) -> str:
         if intent_id == "unknown":

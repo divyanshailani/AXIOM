@@ -8,9 +8,8 @@ import re
 from typing import Tuple
 
 class IntentRetriever:
-    def __init__(self, memory_path: Path, config_path: Path, domain: str):
-        with open(memory_path) as f:
-            self.memory = json.load(f)
+    def __init__(self, memory_data: dict, config_path: Path, domain: str):
+        self.memory = memory_data
         with open(config_path) as f:
             self.config = json.load(f)
             

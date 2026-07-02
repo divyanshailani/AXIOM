@@ -8,9 +8,8 @@ import re
 from typing import Dict
 
 class NaiveBayesRouter:
-    def __init__(self, memory_path: Path, config_path: Path):
-        with open(memory_path) as f:
-            self.memory = json.load(f)
+    def __init__(self, memory_data: dict, config_path: Path):
+        self.memory = memory_data
         with open(config_path) as f:
             self.config = json.load(f)
             

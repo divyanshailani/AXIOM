@@ -1,0 +1,95 @@
+{
+  "patches": [
+    {
+      "date": "2026-07-02",
+      "domain": "modern_context",
+      "action": "add_questions",
+      "intent_id": "mod_transformers",
+      "questions": ["what is DL", "explain DL"]
+    },
+    {
+      "date": "2026-07-02",
+      "domain": "modern_context",
+      "action": "add_router_keywords",
+      "keywords": ["DL"]
+    },
+    {
+      "date": "2026-07-02",
+      "domain": "chit_chat",
+      "action": "add_intent",
+      "intent": {
+        "intent_id": "gen_acknowledgement",
+        "questions": ["i see", "got it", "okay", "alright", "understood", "makes sense"],
+        "response_templates": [
+          "Glad that makes sense.",
+          "Understood. Let me know if you have another question.",
+          "Acknowledged. What would you like to explore next?"
+        ],
+        "key_terms": ["see", "got", "okay", "understood"]
+      }
+    },
+    {
+      "date": "2026-07-02",
+      "domain": "self",
+      "action": "add_router_keywords",
+      "keywords": ["architecture", "explain", "how are you built", "your design", "your code", "your logic", "your pipeline"]
+    },
+    {
+      "date": "2026-07-02",
+      "domain": "self",
+      "action": "add_questions",
+      "intent_id": "self_overview",
+      "questions": ["explain your architecture", "how are you built", "what is your design"]
+    },
+    {
+      "date": "2026-07-02",
+      "domain": "classical_ml",
+      "action": "add_questions",
+      "intent_id": "ml_logistic_regression",
+      "questions": [
+        "what is binary cross entropy",
+        "explain cross entropy loss",
+        "what is AUC",
+        "what is ROC",
+        "explain AUC and ROC",
+        "what is the area under curve",
+        "receiver operating characteristic"
+      ]
+    },
+    {
+      "date": "2026-07-02",
+      "domain": "classical_ml",
+      "action": "add_router_keywords",
+      "keywords": ["cross entropy", "auc", "roc", "area under curve", "receiver operating characteristic"]
+    },
+    {
+      "date": "2026-07-02",
+      "domain": "chit_chat",
+      "action": "add_intent",
+      "intent": {
+        "intent_id": "gen_feedback",
+        "questions": [
+          "you are wrong",
+          "you were wrong",
+          "that is incorrect",
+          "incorrect",
+          "my bad",
+          "i made a mistake",
+          "sorry wrong question"
+        ],
+        "response_templates": [
+          "No problem. Let me know what you'd like to know instead.",
+          "Understood. What should I have said?",
+          "Got it. Let's correct course. What's your actual question?"
+        ],
+        "key_terms": ["wrong", "incorrect", "mistake", "bad"]
+      }
+    },
+    {
+      "date": "2026-07-02",
+      "domain": "chit_chat",
+      "action": "add_router_keywords",
+      "keywords": ["wrong", "incorrect", "mistake", "bad"]
+    }
+  ]
+}
