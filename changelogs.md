@@ -2,7 +2,18 @@
 
 All notable changes to the AXIOM project will be documented in this file.
 
-## [v2.1.0] - V2 TF-IDF & Robust NLP Upgrades (Current)
+## [v2.2.0] - V2 Meta-Fix & NLP Robustness (Current)
+### Added
+- **Memory Patching Workflow**: Added `axiom/bootstrap.py` and `data/memory_patch.json` to enable live, safe in-memory data updates without risking the core `memory.json`.
+- **Synonym Augmentation**: Added `axiom/core/synonyms.py` with regex boundaries to dynamically append canonical math terms to user prompts (e.g. mapping "DL" to "deep learning", "BCE" to "binary cross entropy") before TF-IDF vectorization.
+- **Confidence-Based Fallback**: Added a fail-safe to `AxiomOrchestrator` that reroutes mathematically ambiguous queries (cosine score < 0.20) to `chit_chat` before failing out to `unknown`.
+- **Memory Auditing Script**: Created `scripts/audit_memory.py` to enforce vocabulary synchronization between Router keywords and Retriever intents.
+
+### Fixed
+- Fixed NLP overlapping abbreviations (e.g., "AUC & ROC") by utilizing the synonym augmentation layer.
+- Fixed conversational bridging fragments (e.g., "i see", "you were wrong") by adding isolated `gen_acknowledgement` and `gen_feedback` intents, protected by stopword mapping.
+
+## [v2.1.0] - V2 TF-IDF & Robust NLP Upgrades
 ### Added
 - `chit_chat` domain implemented to mathematically handle greetings, identity questions, and general conversation.
 - `TF-IDF Vectorizer` implemented purely in NumPy, replacing the basic Binary Bag-of-Words retriever. This penalizes common words (like "learning") and heavily weights rare words (like "SVM").
