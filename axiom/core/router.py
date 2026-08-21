@@ -29,9 +29,32 @@ class NaiveBayesRouter:
         
         self._fit()
         
+    def _normalize_token(self, word: str) -> str:
+        """Folds contractions and light suffixes so spelling variants
+        (what's/whats, svm/svms, operating/operate) hit the same vocabulary
+        without requiring lemmatizers or learned models."""
+        if word.endswith("'s"):
+            word = word[:-2]
+        if len(word) <= self.min_len:
+            return word
+        for suffix in ("ing", "ed", "tion", "s"):
+            if word.endswith(suffix) and len(word) - len(suffix) >= self.min_len:
+                trimmed = word[:-len(suffix)]
+                if trimmed not in self.stopwords:
+                    return trimmed
+                return word
+        return word
+
     def _tokenize(self, text: str) -> list:
         words = re.findall(r'\b\w+\b', text.lower())
-        return [w for w in words if len(w) >= self.min_len and w not in self.stopwords]
+        tokens = []
+        for w in words:
+            if w in self.stopwords:
+                continue
+            w = self._normalize_token(w)
+            if len(w) >= self.min_len and w not in self.stopwords:
+                tokens.append(w)
+        return tokens
 
     def _fit(self):
         for domain, content in self.memory['domains'].items():
@@ -42,19 +65,17 @@ class NaiveBayesRouter:
             keywords = content.get('router_keywords', [])
             for kw in keywords:
                 for w in self._tokenize(kw):
-                    if w not in self.stopwords:
-                        self.vocab.add(w)
-                        self.word_counts[domain][w] = self.word_counts[domain].get(w, 0) + 1
-                        self.total_words_per_domain[domain] += 1
+                    self.vocab.add(w)
+                    self.word_counts[domain][w] = self.word_counts[domain].get(w, 0) + 1
+                    self.total_words_per_domain[domain] += 1
                         
             # Train on all questions in intents for richer vocabulary
             for intent in content.get('intents', []):
                 for q in intent.get('questions', []):
                     for w in self._tokenize(q):
-                        if w not in self.stopwords:
-                            self.vocab.add(w)
-                            self.word_counts[domain][w] = self.word_counts[domain].get(w, 0) + 1
-                            self.total_words_per_domain[domain] += 1
+                        self.vocab.add(w)
+                        self.word_counts[domain][w] = self.word_counts[domain].get(w, 0) + 1
+                        self.total_words_per_domain[domain] += 1
             
         self.V = len(self.vocab)
         

@@ -33,6 +33,10 @@ def main():
                   
         except KeyboardInterrupt:
             break
+        except EOFError:
+            # Ctrl-D: treat as a clean exit, not an infinite prompt loop.
+            print()
+            break
         except Exception as e:
             print(f"Error: {e}")
             

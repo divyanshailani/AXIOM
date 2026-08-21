@@ -13,7 +13,24 @@ ML_SYNONYMS = {
     "deep learning": ["dl", "deep neural network"],
     "machine learning": ["ml"],
     "artificial intelligence": ["ai"],
-    "neural network": ["nn"]
+    "neural network": ["nn"],
+    "machine learning": ["ml"],
+    "artificial intelligence": ["ai"]
+}
+
+# Casual / contraction forms that the byte-level stemmer cannot fold because
+# they are dictionary words in their own right (e.g. 'u' is a real word).
+# NOTE: 'k' is deliberately excluded from okay-variants — it collides with
+# k-means / k-nearest-neighbors in ML queries.
+CASUAL_SYNONYMS = {
+    "you": ["u", "ya"],
+    "are": ["r", "ru"],
+    "what is": ["whats"],
+    "give me": ["gimme"],
+    "thanks": ["thx", "ty", "thanx"],
+    "please": ["plz", "pls"],
+    "i do not know": ["idk"],
+    "okay": ["ok", "kk", "alright"]
 }
 
 def augment_query(text: str) -> str:
@@ -27,6 +44,12 @@ def augment_query(text: str) -> str:
             if re.search(r'\b' + re.escape(v) + r'\b', text_lower):
                 extras.append(canonical)
                 break  # only append once per canonical form
+    
+    for canonical, variants in CASUAL_SYNONYMS.items():
+        for v in variants:
+            if re.search(r'\b' + re.escape(v) + r'\b', text_lower):
+                extras.append(canonical)
+                break
     
     if extras:
         return text + " " + " ".join(extras)

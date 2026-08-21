@@ -1,26 +1,23 @@
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
 
-# Testing
+# Test / tooling caches
 .pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
 
-# IDEs
-.vscode/
-.idea/
+# OS / editor
 .DS_Store
+.idea/
+.vscode/
+*.swp
 
-# Exclude any stray plans/memory documents (except the README)
-*.md
-!README.md
-*.plan
-*.json
-!data/*.json
+# AXIOM agent state
+.agents/

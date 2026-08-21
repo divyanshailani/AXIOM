@@ -6,7 +6,7 @@
     "chit_chat": 0.20,
     "classical_ml": 0.35,
     "self": 0.20,
-    "history": 0.15,
-    "modern_context": 0.10
+    "history": 0.10,
+    "modern_context": 0.15
   }
 }

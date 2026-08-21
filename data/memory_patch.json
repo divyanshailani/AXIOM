@@ -90,6 +90,138 @@
       "domain": "chit_chat",
       "action": "add_router_keywords",
       "keywords": ["wrong", "incorrect", "mistake", "bad"]
+    },
+    {
+      "date": "2026-08-21",
+      "domain": "classical_ml",
+      "action": "add_intent",
+      "intent": {
+        "intent_id": "ml_random_forests",
+        "questions": [
+          "explain random forests",
+          "what is a random forest",
+          "what are random forests",
+          "how do random forests work",
+          "what is bagging in random forests",
+          "how does a random forest classifier work"
+        ],
+        "response_templates": [
+          "A random forest trains many decision trees on random subsets of the data and random subsets of features, then combines their votes. Averaging over many decorrelated trees reduces overfitting and variance.",
+          "Random forests are an ensemble method. Each tree is grown on a bootstrap sample of the data with random feature subsets, and the final prediction is the majority vote of all the trees."
+        ],
+        "key_terms": ["random forest", "forest", "bagging", "ensemble", "bootstrap", "trees"]
+      }
+    },
+    {
+      "date": "2026-08-21",
+      "domain": "classical_ml",
+      "action": "add_router_keywords",
+      "keywords": ["random forest", "random forests", "bagging", "ensemble"]
+    },
+    {
+      "date": "2026-08-21",
+      "domain": "classical_ml",
+      "action": "add_questions",
+      "intent_id": "ml_decision_trees",
+      "questions": ["what is a tree", "how do trees split data", "what is a leaf in a decision tree"]
+    },
+    {
+      "date": "2026-08-21",
+      "domain": "self",
+      "action": "add_intent",
+      "intent": {
+        "intent_id": "self_pipeline",
+        "questions": [
+          "how do you work",
+          "what happens when i ask you a question",
+          "walk me through your pipeline",
+          "how does my question get processed",
+          "what is your end to end flow"
+        ],
+        "response_templates": [
+          "When you ask a question, I expand synonyms, route the words through a Naive Bayes domain classifier, match your query against my memory with TF-IDF cosine similarity, and finally return a response template from the best matching intent.",
+          "My pipeline is: synonym augmentation, Bayesian domain routing, TF-IDF intent retrieval, then a hand-written response template from my curated memory. Every step is deterministic and inspectable."
+        ],
+        "key_terms": ["pipeline", "steps", "process", "flow", "synonym", "raw", "augmentation", "route"]
+      }
+    },
+    {
+      "date": "2026-08-21",
+      "domain": "self",
+      "action": "add_router_keywords",
+      "keywords": ["pipeline", "flow", "steps", "process"]
+    },
+    {
+      "date": "2026-08-21",
+      "domain": "modern_context",
+      "action": "add_router_keywords",
+      "keywords": ["transformer", "self attention", "attention mechanism", "gpt model", "language model", "large language models", "transformers"]
+    },
+    {
+      "date": "2026-08-21",
+      "domain": "modern_context",
+      "action": "add_questions",
+      "intent_id": "mod_transformers",
+      "questions": [
+        "what is self attention",
+        "what is an attention mechanism",
+        "tell me about transformer architecture",
+        "how does the transformer encoder work"
+      ]
+    },
+    {
+      "date": "2026-08-21",
+      "domain": "chit_chat",
+      "action": "add_router_keywords",
+      "keywords": ["how are you", "how are you doing", "how are you today", "how's it going", "what's up"]
+    },
+    {
+      "date": "2026-08-21",
+      "domain": "chit_chat",
+      "action": "add_questions",
+      "intent_id": "gen_greeting",
+      "questions": [
+        "how are you doing",
+        "how are you today",
+        "how is it going",
+        "whats up",
+        "how are you",
+        "hi there",
+        "hey there"
+      ]
+    },
+    {
+      "date": "2026-08-21",
+      "domain": "chit_chat",
+      "action": "add_router_keywords",
+      "keywords": ["thanks", "thank you", "thx"]
+    },
+    {
+      "date": "2026-08-21",
+      "domain": "classical_ml",
+      "action": "add_router_keywords",
+      "keywords": ["xgboost", "gradient boosting", "boosting"]
+    },
+    {
+      "date": "2026-08-21",
+      "domain": "classical_ml",
+      "action": "add_questions",
+      "intent_id": "ml_decision_trees",
+      "questions": ["what is xgboost", "explain xgboost", "what is gradient boosting"]
+    },
+    {
+      "date": "2026-08-21",
+      "domain": "chit_chat",
+      "action": "add_intent",
+      "intent": {
+        "intent_id": "gen_thanks",
+        "questions": ["thanks", "thank you", "thx", "thank you very much", "appreciate it", "ty"],
+        "response_templates": [
+          "You're welcome! Ask me about any machine learning topic anytime.",
+          "Happy to help. What would you like to explore next?"
+        ],
+        "key_terms": ["thanks", "thank", "welcome", "appreciate"]
+      }
     }
   ]
 }

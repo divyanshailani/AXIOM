@@ -1,8 +1,29 @@
-# AXIOM V2.1 NLP Edge Cases & Known Issues
+# AXIOM Edge Cases & Known Issues
 
-Based on the latest CLI testing, the Naive Bayes Router and TF-IDF Retriever have made significant improvements in structural intent separation, but they still struggle with specific vocabulary collisions and Out-Of-Vocabulary (OOV) fallbacks. 
+This document tracks edge cases discovered through CLI and automated testing.
 
-This document outlines the current failures to be addressed by the next agent.
+## Status Update (V2.3, 2026-08-21)
+
+All five V2.1 issues below were resolved in V2.2 (via `memory_patch.json`, synonym augmentation, and the confidence-based fallback), and are now **guarded by regression tests** in `tests/`. V2.3 additionally fixed the following V2.2-era gaps:
+
+### V2.3 Resolved Issues
+1. **All-stopword query OOV**: `"how are you"` matched `unknown` (0.00) because `how`/`are`/`you` are all stopwords and the query collapsed to nothing. Fixed by falling back to raw words in the retriever when stopword filtering empties the token stream.
+2. **Transformers misrouting**: `"what are transformers"` routed to `chit_chat`/`unknown` because the `modern_context` prior (0.10) was too low and no transformer router keywords existed on the patched memory. Fixed by recalibrating priors and adding transformer/attention keywords.
+3. **Key-terms dead field**: `key_terms` (e.g. "xgboost", "kernel trick", "auc") was read by nothing, so those terms were unmatchable. Fixed: retriever now folds key_terms into the TF-IDF vocabulary.
+4. **Random-forest conflation**: `"explain random forests"` answered with decision-tree text. Fixed with a dedicated `ml_random_forests` intent.
+5. **Pipeline vs architecture conflation**: `"how do you work"` answered with the Naive-Bayes router description. Fixed with a dedicated `self_pipeline` intent.
+6. **Near-miss tokens**: `"hiii"` / `"svmm"` fell to `unknown` despite being obvious typos. Fixed via char n-gram tolerance (config-gated, default on).
+7. **Conversational thanks**: `"thanks"` / `"thank you"` fell to `unknown`. Fixed with a dedicated `gen_thanks` intent.
+8. **Single-letter expansion collision**: adding `"k"` to the "okay" casual synonyms caused `"k means"` / `"knn"` queries to expand to "okay" and be hijacked by chit_chat. Fixed by removing `"k"` from okay-variants (regression-tested).
+
+### Known Remaining Gaps (advisory)
+- The router treats a zero-token query as the prior distribution; the orchestrator's empty-prompt guard means this only shows for punctuation-only input like `"!!!"`, which returns the generic apology. Acceptable, but could be tightened.
+- Knowledge coverage is limited to what's curated in `memory.json` + patches. Terms like "hyperplane", "margin", "centroid" exist in intent key_terms but are not router keywords, so a user typing them bare may route to the highest-prior domain. See `python scripts/audit_memory.py` for the full drift report.
+- The char n-gram feature is a heuristic tuned for short ML vocab; it may add slight noise on very short queries. It is config-gated (`use_char_ngrams`).
+
+---
+
+## V2.1 Issues (all Fixed in V2.2, regression-guarded since V2.3)
 
 ## 1. Abbreviation & Synonym OOV (Out of Vocabulary)
 - **Input**: `"& what's DL ?"`
