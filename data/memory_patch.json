@@ -5,13 +5,18 @@
       "domain": "modern_context",
       "action": "add_questions",
       "intent_id": "mod_transformers",
-      "questions": ["what is DL", "explain DL"]
+      "questions": [
+        "what is DL",
+        "explain DL"
+      ]
     },
     {
       "date": "2026-07-02",
       "domain": "modern_context",
       "action": "add_router_keywords",
-      "keywords": ["DL"]
+      "keywords": [
+        "DL"
+      ]
     },
     {
       "date": "2026-07-02",
@@ -19,27 +24,51 @@
       "action": "add_intent",
       "intent": {
         "intent_id": "gen_acknowledgement",
-        "questions": ["i see", "got it", "okay", "alright", "understood", "makes sense"],
+        "questions": [
+          "i see",
+          "got it",
+          "okay",
+          "alright",
+          "understood",
+          "makes sense"
+        ],
         "response_templates": [
           "Glad that makes sense.",
           "Understood. Let me know if you have another question.",
           "Acknowledged. What would you like to explore next?"
         ],
-        "key_terms": ["see", "got", "okay", "understood"]
+        "key_terms": [
+          "see",
+          "got",
+          "okay",
+          "understood"
+        ]
       }
     },
     {
       "date": "2026-07-02",
       "domain": "self",
       "action": "add_router_keywords",
-      "keywords": ["architecture", "explain", "how are you built", "your design", "your code", "your logic", "your pipeline"]
+      "keywords": [
+        "architecture",
+        "explain",
+        "how are you built",
+        "your design",
+        "your code",
+        "your logic",
+        "your pipeline"
+      ]
     },
     {
       "date": "2026-07-02",
       "domain": "self",
       "action": "add_questions",
       "intent_id": "self_overview",
-      "questions": ["explain your architecture", "how are you built", "what is your design"]
+      "questions": [
+        "explain your architecture",
+        "how are you built",
+        "what is your design"
+      ]
     },
     {
       "date": "2026-07-02",
@@ -60,7 +89,13 @@
       "date": "2026-07-02",
       "domain": "classical_ml",
       "action": "add_router_keywords",
-      "keywords": ["cross entropy", "auc", "roc", "area under curve", "receiver operating characteristic"]
+      "keywords": [
+        "cross entropy",
+        "auc",
+        "roc",
+        "area under curve",
+        "receiver operating characteristic"
+      ]
     },
     {
       "date": "2026-07-02",
@@ -82,14 +117,24 @@
           "Understood. What should I have said?",
           "Got it. Let's correct course. What's your actual question?"
         ],
-        "key_terms": ["wrong", "incorrect", "mistake", "bad"]
+        "key_terms": [
+          "wrong",
+          "incorrect",
+          "mistake",
+          "bad"
+        ]
       }
     },
     {
       "date": "2026-07-02",
       "domain": "chit_chat",
       "action": "add_router_keywords",
-      "keywords": ["wrong", "incorrect", "mistake", "bad"]
+      "keywords": [
+        "wrong",
+        "incorrect",
+        "mistake",
+        "bad"
+      ]
     },
     {
       "date": "2026-08-21",
@@ -109,21 +154,37 @@
           "A random forest trains many decision trees on random subsets of the data and random subsets of features, then combines their votes. Averaging over many decorrelated trees reduces overfitting and variance.",
           "Random forests are an ensemble method. Each tree is grown on a bootstrap sample of the data with random feature subsets, and the final prediction is the majority vote of all the trees."
         ],
-        "key_terms": ["random forest", "forest", "bagging", "ensemble", "bootstrap", "trees"]
+        "key_terms": [
+          "random forest",
+          "forest",
+          "bagging",
+          "ensemble",
+          "bootstrap",
+          "trees"
+        ]
       }
     },
     {
       "date": "2026-08-21",
       "domain": "classical_ml",
       "action": "add_router_keywords",
-      "keywords": ["random forest", "random forests", "bagging", "ensemble"]
+      "keywords": [
+        "random forest",
+        "random forests",
+        "bagging",
+        "ensemble"
+      ]
     },
     {
       "date": "2026-08-21",
       "domain": "classical_ml",
       "action": "add_questions",
       "intent_id": "ml_decision_trees",
-      "questions": ["what is a tree", "how do trees split data", "what is a leaf in a decision tree"]
+      "questions": [
+        "what is a tree",
+        "how do trees split data",
+        "what is a leaf in a decision tree"
+      ]
     },
     {
       "date": "2026-08-21",
@@ -142,20 +203,42 @@
           "When you ask a question, I expand synonyms, route the words through a Naive Bayes domain classifier, match your query against my memory with TF-IDF cosine similarity, and finally return a response template from the best matching intent.",
           "My pipeline is: synonym augmentation, Bayesian domain routing, TF-IDF intent retrieval, then a hand-written response template from my curated memory. Every step is deterministic and inspectable."
         ],
-        "key_terms": ["pipeline", "steps", "process", "flow", "synonym", "raw", "augmentation", "route"]
+        "key_terms": [
+          "pipeline",
+          "steps",
+          "process",
+          "flow",
+          "synonym",
+          "raw",
+          "augmentation",
+          "route"
+        ]
       }
     },
     {
       "date": "2026-08-21",
       "domain": "self",
       "action": "add_router_keywords",
-      "keywords": ["pipeline", "flow", "steps", "process"]
+      "keywords": [
+        "pipeline",
+        "flow",
+        "steps",
+        "process"
+      ]
     },
     {
       "date": "2026-08-21",
       "domain": "modern_context",
       "action": "add_router_keywords",
-      "keywords": ["transformer", "self attention", "attention mechanism", "gpt model", "language model", "large language models", "transformers"]
+      "keywords": [
+        "transformer",
+        "self attention",
+        "attention mechanism",
+        "gpt model",
+        "language model",
+        "large language models",
+        "transformers"
+      ]
     },
     {
       "date": "2026-08-21",
@@ -173,7 +256,13 @@
       "date": "2026-08-21",
       "domain": "chit_chat",
       "action": "add_router_keywords",
-      "keywords": ["how are you", "how are you doing", "how are you today", "how's it going", "what's up"]
+      "keywords": [
+        "how are you",
+        "how are you doing",
+        "how are you today",
+        "how's it going",
+        "what's up"
+      ]
     },
     {
       "date": "2026-08-21",
@@ -194,20 +283,32 @@
       "date": "2026-08-21",
       "domain": "chit_chat",
       "action": "add_router_keywords",
-      "keywords": ["thanks", "thank you", "thx"]
+      "keywords": [
+        "thanks",
+        "thank you",
+        "thx"
+      ]
     },
     {
       "date": "2026-08-21",
       "domain": "classical_ml",
       "action": "add_router_keywords",
-      "keywords": ["xgboost", "gradient boosting", "boosting"]
+      "keywords": [
+        "xgboost",
+        "gradient boosting",
+        "boosting"
+      ]
     },
     {
       "date": "2026-08-21",
       "domain": "classical_ml",
       "action": "add_questions",
       "intent_id": "ml_decision_trees",
-      "questions": ["what is xgboost", "explain xgboost", "what is gradient boosting"]
+      "questions": [
+        "what is xgboost",
+        "explain xgboost",
+        "what is gradient boosting"
+      ]
     },
     {
       "date": "2026-08-21",
@@ -215,13 +316,164 @@
       "action": "add_intent",
       "intent": {
         "intent_id": "gen_thanks",
-        "questions": ["thanks", "thank you", "thx", "thank you very much", "appreciate it", "ty"],
+        "questions": [
+          "thanks",
+          "thank you",
+          "thx",
+          "thank you very much",
+          "appreciate it",
+          "ty"
+        ],
         "response_templates": [
           "You're welcome! Ask me about any machine learning topic anytime.",
           "Happy to help. What would you like to explore next?"
         ],
-        "key_terms": ["thanks", "thank", "welcome", "appreciate"]
+        "key_terms": [
+          "thanks",
+          "thank",
+          "welcome",
+          "appreciate"
+        ]
       }
+    },
+    {
+      "date": "2026-08-24",
+      "domain": "chit_chat",
+      "action": "add_router_keywords",
+      "keywords": [
+        "axiom",
+        "capability",
+        "funny",
+        "greetings",
+        "welcome"
+      ]
+    },
+    {
+      "date": "2026-08-24",
+      "domain": "self",
+      "action": "add_router_keywords",
+      "keywords": [
+        "angle",
+        "tfidf",
+        "synonym augmentation",
+        "matrix",
+        "frequency",
+        "route",
+        "raw text",
+        "augmentation"
+      ]
+    },
+    {
+      "date": "2026-08-24",
+      "domain": "classical_ml",
+      "action": "add_router_keywords",
+      "keywords": [
+        "hyperplane",
+        "margin",
+        "centroid",
+        "euclidean distance",
+        "gini index",
+        "convergence",
+        "decision boundary",
+        "classification",
+        "coefficient",
+        "residual",
+        "continuous output",
+        "lazy learning",
+        "majority vote",
+        "bootstrap sampling",
+        "unsupervised grouping"
+      ]
+    },
+    {
+      "date": "2026-08-24",
+      "domain": "history",
+      "action": "add_router_keywords",
+      "keywords": [
+        "1950",
+        "1957",
+        "cornell aeronautical laboratory",
+        "imitation game",
+        "neuron weights",
+        "think"
+      ]
+    },
+    {
+      "date": "2026-08-24",
+      "domain": "modern_context",
+      "action": "add_router_keywords",
+      "keywords": [
+        "black box",
+        "inspectable",
+        "parallel processing",
+        "parameters count"
+      ]
+    },
+    {
+      "date": "2026-08-24",
+      "domain": "self",
+      "action": "add_router_keywords",
+      "keywords": [
+        "probability"
+      ]
+    },
+    {
+      "date": "2026-08-24",
+      "domain": "classical_ml",
+      "action": "add_router_keywords",
+      "keywords": [
+        "probability",
+        "node",
+        "separation"
+      ]
+    },
+    {
+      "date": "2026-08-24",
+      "domain": "modern_context",
+      "action": "add_router_keywords",
+      "keywords": [
+        "unlike"
+      ]
+    },
+    {
+      "date": "2026-08-24",
+      "domain": "classical_ml",
+      "action": "add_intent",
+      "intent": {
+        "intent_id": "ml_gradient_descent",
+        "questions": [
+          "what is gradient descent",
+          "explain gradient descent",
+          "how does gradient descent work",
+          "whats the deal with gradient descent",
+          "what is stochastic gradient descent",
+          "explain sgd",
+          "what is a learning rate"
+        ],
+        "response_templates": [
+          "Gradient descent is an optimization algorithm: it repeatedly nudges model parameters downhill along the negative gradient until a loss function reaches a minimum.",
+          "In classical machine learning, gradient descent trains models like logistic regression by minimizing loss step by step. The learning rate controls how large each step is.",
+          "Stochastic gradient descent (SGD) is the variant that updates weights from one sample or a small batch at a time instead of the full dataset, trading smoothness for speed."
+        ],
+        "key_terms": [
+          "gradient descent",
+          "sgd",
+          "learning rate",
+          "optimizer",
+          "loss minimization",
+          "step size"
+        ]
+      }
+    },
+    {
+      "date": "2026-08-24",
+      "domain": "classical_ml",
+      "action": "add_router_keywords",
+      "keywords": [
+        "optimizer",
+        "loss minimization",
+        "step size"
+      ]
     }
   ]
 }

@@ -15,7 +15,7 @@ class MemoryBootstrap:
     def _apply_patch(self, base: dict, patch: dict):
         domain = patch.get("domain")
         action = patch.get("action")
-        
+
         if domain not in base["domains"]:
             # Fail loudly: a typo'd domain is an operator error, not a silent no-op.
             raise ValueError(f"Patch references unknown domain {domain!r}.")
@@ -29,7 +29,14 @@ class MemoryBootstrap:
                 raise ValueError(f"add_questions for {domain}/{intent_id} needs a non-empty questions list.")
             for intent in base["domains"][domain]["intents"]:
                 if intent["intent_id"] == intent_id:
-                    intent["questions"].extend(questions)
+                    # Idempotent replay: skip questions the intent already has
+                    # (including duplicates within this same patch) so applying
+                    # the transaction log twice cannot corrupt training data.
+                    existing = set(intent["questions"])
+                    for q in questions:
+                        if q not in existing:
+                            intent["questions"].append(q)
+                            existing.add(q)
                     break
             else:
                 raise ValueError(f"add_questions references unknown intent {intent_id!r} in {domain!r}.")
@@ -45,10 +52,15 @@ class MemoryBootstrap:
             keywords = patch.get("keywords", [])
             if not isinstance(keywords, list) or not keywords:
                 raise ValueError(f"add_router_keywords for {domain!r} needs a non-empty keywords list.")
-            base["domains"][domain]["router_keywords"].extend(keywords)
+            # Same idempotency rule as add_questions: replays are no-ops.
+            existing = set(base["domains"][domain]["router_keywords"])
+            for kw in keywords:
+                if kw not in existing:
+                    base["domains"][domain]["router_keywords"].append(kw)
+                    existing.add(kw)
 
-    def load_memory(self) -> dict:
-        with open(self.memory_path) as f:
+    def load_memory(self, memory_path: Path = None) -> dict:
+        with open(memory_path or self.memory_path) as f:
             base = json.load(f)
             
         if self.patch_path.exists():

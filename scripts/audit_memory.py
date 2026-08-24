@@ -17,6 +17,9 @@ STOPWORDS = {
     "can", "tell", "who", "when", "please", "my", "that", "this", "an", "was",
     "were", "know", "question", "questions", "make", "makes", "work", "much",
     "very", "see", "got", "okay", "alright", "later", "there", "not", "through",
+    # 'k' sits below router min_word_length, so it can never enter the router
+    # vocabulary by design; flagging it every audit run is noise.
+    "k",
 }
 
 

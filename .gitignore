@@ -21,3 +21,4 @@ htmlcov/
 
 # AXIOM agent state
 .agents/
+data/miss_log.jsonl

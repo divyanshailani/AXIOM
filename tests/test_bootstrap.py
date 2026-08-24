@@ -63,6 +63,27 @@ def test_add_router_keywords_patch(bootstrap):
     assert "beta" in mem["domains"]["d"]["router_keywords"]
 
 
+def test_add_questions_replay_is_idempotent(bootstrap):
+    # V2.4 regression: replaying the same transaction log used to duplicate
+    # the questions, silently corrupting training data.
+    _write_patch(bootstrap, [
+        {"domain": "d", "action": "add_questions", "intent_id": "i1",
+         "questions": ["q1", "q2", "q2"]}
+    ])
+    first = bootstrap.load_memory()
+    second = bootstrap.load_memory()
+    assert first["domains"]["d"]["intents"][0]["questions"] == ["q1", "q2"]
+    assert second["domains"]["d"]["intents"][0]["questions"] == ["q1", "q2"]
+
+
+def test_add_router_keywords_replay_is_idempotent(bootstrap):
+    _write_patch(bootstrap, [
+        {"domain": "d", "action": "add_router_keywords", "keywords": ["alpha", "beta"]}
+    ])
+    mem = bootstrap.load_memory()
+    assert mem["domains"]["d"]["router_keywords"] == ["alpha", "beta"]
+
+
 def test_unknown_domain_raises(bootstrap):
     _write_patch(bootstrap, [
         {"domain": "nope", "action": "add_router_keywords", "keywords": ["x"]}

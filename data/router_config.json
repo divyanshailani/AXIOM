@@ -1,6 +1,8 @@
 {
   "smoothing_alpha": 1.0,
   "min_word_length": 2,
+  "use_negation_window": true,
+  "negation_window": 3,
   "stopwords": ["the", "a", "is", "what", "how", "does", "do", "you", "your", "me", "about", "see", "i", "it", "whats"],
   "domain_priors": {
     "chit_chat": 0.20,

@@ -2,7 +2,33 @@
 
 All notable changes to the AXIOM project will be documented in this file.
 
-## [v2.3.0] - V2.3 Hardening & NLP Coverage (Current)
+## [v2.4.0] - V2.4 Calibration & Multi-Turn (Current)
+All threshold decisions in this release are measurement-driven: every golden
+question in memory and a battery of adversarial queries were scored through
+the live pipeline before picking numbers.
+
+### Added
+- **Strict-evidence retrieval**: the retriever's fuzzy mapper now only trusts *containment* (a vocabulary word appearing inside the query token: "svmm" contains "svm", "transformers" contains "transformer"). Loose char-trigram coincidence was measured producing confident nonsense — zero-overlap queries like "what is the weather" or "gradient descent" scored 0.35-0.60 against unrelated intents, *higher* than legitimate queries. Coincidental n-grams can no longer justify an answer.
+- **Ambiguity margin**: `ambiguity_margin` (retriever_config) rejects an intent that fails to beat its runner-up by a relative gap — near-ties now fall back honestly instead of answering whichever came out on top.
+- **Context retry (multi-turn)**: when a query cannot stand on its own (score below `context_retry.standalone_floor`), the orchestrator retries retrieval over previous-query + current-query so pronoun follow-ups ("what about its variance?" after SVM talk) resolve against the established topic. Three gates prevent hijacking legitimate standalone answers: chit_chat turns are never reinterpreted, adoption requires clearing `min_score`, and the merged match must hold at least twice the primary evidence. `ConversationBuffer` is now load-bearing instead of write-only.
+- **Miss log**: fallbacks append `{timestamp, query, reason, routed domain, router top-3, best intent, score, runner-up}` to `data/miss_log.jsonl` (path via `miss_log_path` config; set to null to disable). Reason codes distinguish `empty_query` / `below_threshold` / `ambiguous` / `no_model`, making future tuning data-driven.
+- **Negation windows**: tokens after a negator ("not", "never", "doesn"…) additionally emit prefixed variants ("not_work") in both router and retriever vocabularies, so "explain when k-means does NOT work" stays inside clustering instead of order-blindly routing to self-overview. Plain forms are kept alongside, so non-negated matching is unchanged. Shared helper: `axiom/core/negation.py`. Known limitation: the apostrophe forms "can't"/"won't" tokenize as ("can"/"won", "t") whose negation signal sits in the dropped single-letter fragment — use "cannot"/"not"/"cant".
+- **Gradient descent intent**: added `ml_gradient_descent` via memory patch. Calibration showed no threshold separates it from legitimate queries (it shares the real word "gradient" with gradient-boosting docs); coverage is the classical fix for its most common phrasing.
+- **New tests**: negation unit tests, margin/strict-evidence retrieval tests, miss-log test, retriever-caching regression, context-retry rescue-and-hijack-guard cases, punctuation input, patch idempotency (77 total).
+
+### Fixed
+- Fixed confident wrong answers from trigram noise: "what is the weather", "explain quantum computing", "recommend me a movie", "what about its variance" all answered unrelated templates at 0.35-0.60; they now fall back honestly (and follow-ups among them resolve through context retry).
+- Fixed punctuation-only input ("!!!") producing a dishonest "I don't have knowledge about topics in 'classical_ml'" apology; content-free prompts now return "I didn't catch that."
+- Fixed per-message rebuild cost: `IntentRetriever` instances (TF-IDF models + config parsing) are built once per domain at boot, not on every chat call.
+- Fixed `memory_patch.json` replays duplicating data: `add_questions` and `add_router_keywords` are idempotent (duplicates within one patch are also skipped).
+- Fixed audit drift: key_terms vocabulary (hyperplane, centroid, margin, axiom, tfidf, …) is now covered by router keywords via memory patches; `scripts/audit_memory.py` reports clean. 'k' is exempted in the audit (below router `min_word_length` by design).
+- Fixed dead config keys (`enable_explanations`, `response_format`, `glove_path`, `vectorization`) — removed. `memory_path` is now actually wired into `MemoryBootstrap`; `miss_log_path` and `context_retry` are new wired keys. A config regression test keeps them honest.
+
+### Known limitations (measured, documented)
+- Single-word lexical collisions remain possible classically: "who won the world cup" matches identity questions on the real word "who"; "tell me about football" matches gen_joke on "tell". No BoW system can separate these without semantics or knowledge coverage; miss logging surfaces them for future intents.
+- Standalone orphan fragments with no prior turn ("and why is that useful") may still weak-match a generic template; with prior context they resolve correctly.
+
+## [v2.3.0] - V2.3 Hardening & NLP Coverage
 ### Added
 - **Random forests intent**: Added `ml_random_forests` to `classical_ml` via memory patch so "explain random forests" gets a dedicated answer instead of falling back to decision-tree text.
 - **Pipeline intent**: Added `self_pipeline` to `self` via memory patch so "how do you work" / "what happens when i ask you a question" get a step-by-step answer.

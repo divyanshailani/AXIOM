@@ -9,15 +9,25 @@ from typing import Tuple
 import numpy as np
 from pathlib import Path
 
+from axiom.core.negation import apply_negation_window
+
 
 class IntentRetriever:
     """TF-IDF cosine matcher that scores a query against a domain's intents.
 
     The model is built at construction time from both the intent questions and
     the intent key_terms (domain vocabulary that would otherwise never enter
-    the vector space, e.g. 'xgboost', 'kernel trick'). Char n-grams are added
-    so short near-miss tokens ('hiii', 'knnn') still contribute noise-tolerant
-    signal without touching the TF/IDF math itself.
+    the vector space, e.g. 'xgboost', 'kernel trick'). Query tokens that
+    CONTAIN a vocabulary word ('svmm' contains 'svm', 'transformers' contains
+    'transformer') are folded onto that word so short near-misses and plural
+    forms contribute real evidence without touching the TF/IDF math itself.
+
+    Deliberately NOT done: loose character-trigram coincidence matching. It was
+    measured (V2.4 calibration) producing confident nonsense — queries with
+    zero real word overlap ("what is the weather", "gradient descent") scored
+    0.35-0.60 against unrelated intents purely via trigram collisions, higher
+    than legitimate queries like "what are transformers". Coincidental n-grams
+    are therefore never allowed to justify an answer.
     """
 
     def __init__(self, memory_data: dict, config_path: Path, domain: str):
@@ -27,10 +37,16 @@ class IntentRetriever:
 
         self.domain = domain
         self.threshold = self.config.get('similarity_threshold', 0.15)
+        # Relative gap the winner must hold over the runner-up; below this the
+        # domain's intents are considered tied and the query is rejected as
+        # ambiguous rather than answered with whichever came out on top.
+        self.ambiguity_margin = self.config.get('ambiguity_margin', 0.10)
         self.fallback = self.config.get('fallback_intent', 'unknown')
         self.stopwords = set(self.config.get('stopwords', []))
         self.use_ngrams = self.config.get('use_char_ngrams', False)
         self.ngram_n = int(self.config.get('char_ngram_n', 3))
+        self.use_negation = self.config.get('use_negation_window', False)
+        self.negation_window = int(self.config.get('negation_window', 3))
 
         self.intents = self.memory['domains'].get(domain, {}).get('intents', [])
 
@@ -45,19 +61,21 @@ class IntentRetriever:
         filtered = [w for w in words if w not in self.stopwords]
         # A query like 'how are you' is 100% stopwords in some domains; keep the
         # raw words so the greeting still maps onto chit_chat's gen_greeting.
-        return filtered if filtered else words
+        if not filtered:
+            return words
+        if self.use_negation:
+            filtered = apply_negation_window(filtered, self.negation_window)
+        return filtered
 
     def _ngram_features(self, tokens: list) -> dict:
-        """Maps query tokens onto existing vocab words for near-miss tolerance.
+        """Maps query/doc tokens onto existing vocab words for near-miss tolerance.
 
-        A near-miss word like 'hiii' contains the vocab word 'hi', and 'svmm'
-        contains 'svm'. Two guarded rules keep this noise-tolerant without
-        letting generic short words pollute:
+        Only high-trust containment rules are applied:
           - vocab words >= ngram_n chars count when they appear inside the
-            query token (svm in svmm, knn in knnn);
+            token ('svm' in 'svmm', 'transformer' in 'transformers');
           - shorter vocab words (e.g. 'hi') only count as a prefix of the
-            query token, so 'hiii' -> 'hi' works but a stray 'k' inside
-            'bake' does not vote for clustering.
+            token, so 'hiii' -> 'hi' works but a stray 'k' inside 'bake'
+            does not vote for clustering.
         Vocabulary does not grow and the TF-IDF math is untouched.
         """
         if not self.use_ngrams:
@@ -65,23 +83,22 @@ class IntentRetriever:
         hits = collections.Counter()
         for tok in tokens:
             tok = tok.lower()
-            if len(tok) < self.ngram_n:
+            # Negated tokens match on their content stem, so 'not_work' maps
+            # onto both 'work' and 'not_work' vocabulary entries. The hit key
+            # is always a word taken from the vocabulary itself — never a
+            # newly constructed string.
+            content = tok[4:] if tok.startswith("not_") else tok
+            if len(content) < self.ngram_n:
                 continue
             for vocab_word in self.vocab_idx:
-                if len(vocab_word) >= self.ngram_n:
+                base = vocab_word[4:] if vocab_word.startswith("not_") else vocab_word
+                if len(base) >= self.ngram_n:
                     # full-word / substring overlap (svm in svmm)
-                    if vocab_word in tok:
+                    if base in tok or base in content:
                         hits[vocab_word] += 1
-                        continue
-                    # shared char n-gram between query token and vocab word
-                    for i in range(len(tok) - self.ngram_n + 1):
-                        if tok[i:i + self.ngram_n] in vocab_word:
-                            hits[vocab_word] += 1
-                            break
-                else:
+                elif tok.startswith(base):
                     # short vocab word (hi, k): only exact-ish prefix match
-                    if tok.startswith(vocab_word):
-                        hits[vocab_word] += 1
+                    hits[vocab_word] += 1
         return hits
 
     def _build_tfidf_model(self):
@@ -121,30 +138,24 @@ class IntentRetriever:
         # Using standard smoothed IDF: log(N / (df + 1)) + 1
         self.idf = np.log((num_docs + 1) / (df + 1)) + 1.0
 
-        # 4. Precompute TF-IDF vectors for each intent
+        # 4. Precompute TF-IDF vectors for each intent. The containment mapper
+        # folds unstemmed variants already present in the docs ('trees' onto
+        # 'tree'), which is why it runs here too.
         for tokens in intent_docs:
             tf = np.zeros(vocab_size)
             for t in tokens:
                 tf[self.vocab_idx[t]] += 1
 
-            # L2 Normalization (Cosine Similarity preparation)
             tfidf_vec = tf * self.idf
+
+            if self.use_ngrams:
+                mapped = self._ngram_features(tokens)
+                for vocab_word, cnt in mapped.items():
+                    tfidf_vec[self.vocab_idx[vocab_word]] += cnt
+
             norm = np.linalg.norm(tfidf_vec)
             if norm > 0:
                 tfidf_vec = tfidf_vec / norm
-
-            # Char n-gram augmentation (kept in the same vector space,
-            # scaled so word overlap dominates when it exists).
-            if self.use_ngrams:
-                ngram_counts = self._ngram_features(tokens)
-                if ngram_counts:
-                    ng_tf = np.zeros(vocab_size)
-                    for vocab_word, cnt in ngram_counts.items():
-                        ng_tf[self.vocab_idx[vocab_word]] += cnt
-                    ng_norm = np.linalg.norm(ng_tf)
-                    if ng_norm > 0:
-                        tfidf_vec = tfidf_vec + 0.25 * (ng_tf / ng_norm)
-                        tfidf_vec = tfidf_vec / np.linalg.norm(tfidf_vec)
 
             self.intent_vectors.append(tfidf_vec)
 
@@ -161,42 +172,68 @@ class IntentRetriever:
                 tf[self.vocab_idx[t]] += 1
 
         tfidf_vec = tf * self.idf
+
+        if self.use_ngrams:
+            mapped = self._ngram_features(tokens)
+            for vocab_word, cnt in mapped.items():
+                tfidf_vec[self.vocab_idx[vocab_word]] += cnt
+
         norm = np.linalg.norm(tfidf_vec)
         if norm > 0:
             tfidf_vec = tfidf_vec / norm
 
-        if self.use_ngrams:
-            ngram_counts = self._ngram_features(tokens)
-            if ngram_counts:
-                ng_tf = np.zeros(vocab_size)
-                for vocab_word, cnt in ngram_counts.items():
-                    ng_tf[self.vocab_idx[vocab_word]] += cnt
-                ng_norm = np.linalg.norm(ng_tf)
-                if ng_norm > 0:
-                    tfidf_vec = tfidf_vec + 0.25 * (ng_tf / ng_norm)
-                    tfidf_vec = tfidf_vec / np.linalg.norm(tfidf_vec)
-
         return tfidf_vec
 
-    def find_intent(self, query: str) -> Tuple[str, float]:
+    def find_intent_detailed(self, query: str) -> dict:
+        """Scores the query and reports the full acceptance decision.
+
+        Returns {'intent_id', 'score', 'runner_up_score', 'accepted', 'reason'}
+        where reason is one of: 'accepted', 'below_threshold', 'ambiguous',
+        'empty_query', 'no_model'. Rejected queries carry intent_id == fallback
+        but keep the measured scores so misses stay diagnosable.
+        """
+        base = {
+            "intent_id": self.fallback,
+            "score": 0.0,
+            "runner_up_score": 0.0,
+            "accepted": False,
+        }
         if not self.intents or len(self.vocab_idx) == 0:
-            return self.fallback, 0.0
+            base["reason"] = "no_model"
+            return base
 
         query_vec = self._vectorize_query(query)
-        if np.linalg.norm(query_vec) == 0:
-            return self.fallback, 0.0
+        if query_vec.size == 0 or np.linalg.norm(query_vec) == 0:
+            base["reason"] = "empty_query"
+            return base
 
-        best_intent = self.fallback
-        best_score = 0.0
+        scores = sorted(
+            ((float(np.dot(query_vec, doc_vec)), i) for i, doc_vec in enumerate(self.intent_vectors)),
+            key=lambda t: -t[0],
+        )
+        best_score = scores[0][0]
+        runner_up = scores[1][0] if len(scores) > 1 else 0.0
+        best_intent = self.intents[scores[0][1]]['intent_id']
 
-        for i, doc_vec in enumerate(self.intent_vectors):
-            # Dot product of two L2 normalized vectors is Cosine Similarity
-            score = np.dot(query_vec, doc_vec)
-            if score > best_score:
-                best_score = score
-                best_intent = self.intents[i]['intent_id']
+        base["score"] = best_score
+        base["runner_up_score"] = runner_up
 
-        if best_score >= self.threshold:
-            return best_intent, float(best_score)
+        if best_score < self.threshold:
+            base["reason"] = "below_threshold"
+            return base
 
-        return self.fallback, float(best_score)
+        rel_gap = (best_score - runner_up) / best_score if best_score > 0 else 0.0
+        if len(scores) > 1 and rel_gap < self.ambiguity_margin:
+            base["reason"] = "ambiguous"
+            return base
+
+        base["intent_id"] = best_intent
+        base["accepted"] = True
+        base["reason"] = "accepted"
+        return base
+
+    def find_intent(self, query: str) -> Tuple[str, float]:
+        detail = self.find_intent_detailed(query)
+        if detail["accepted"]:
+            return detail["intent_id"], float(detail["score"])
+        return self.fallback, float(detail["score"])

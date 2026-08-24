@@ -1,6 +1,10 @@
 {
   "memory_path": "data/memory.json",
   "conversation_history_length": 2,
-  "enable_explanations": true,
-  "response_format": "rich"
+  "miss_log_path": "data/miss_log.jsonl",
+  "context_retry": {
+    "enabled": true,
+    "standalone_floor": 0.30,
+    "min_score": 0.35
+  }
 }

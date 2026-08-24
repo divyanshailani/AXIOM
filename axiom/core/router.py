@@ -7,15 +7,19 @@ from pathlib import Path
 import re
 from typing import Dict
 
+from axiom.core.negation import apply_negation_window
+
 class NaiveBayesRouter:
     def __init__(self, memory_data: dict, config_path: Path):
         self.memory = memory_data
         with open(config_path) as f:
             self.config = json.load(f)
-            
+
         self.alpha = self.config.get('smoothing_alpha', 1.0)
         self.stopwords = set(self.config.get('stopwords', []))
         self.min_len = self.config.get('min_word_length', 2)
+        self.use_negation = self.config.get('use_negation_window', False)
+        self.negation_window = int(self.config.get('negation_window', 3))
         
         # P(C)
         self.log_priors = {}
@@ -54,6 +58,11 @@ class NaiveBayesRouter:
             w = self._normalize_token(w)
             if len(w) >= self.min_len and w not in self.stopwords:
                 tokens.append(w)
+        if self.use_negation:
+            # Negation is applied after suffix folding so prefixed tokens carry
+            # normalized stems ('not_work'); plain forms are kept alongside the
+            # 'not_' variants so non-negated matching is unchanged.
+            tokens = apply_negation_window(tokens, self.negation_window)
         return tokens
 
     def _fit(self):
