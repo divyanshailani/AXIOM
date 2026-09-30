@@ -13,19 +13,52 @@ still match each other exactly as before).
 
 import re
 
-# Contractions tokenize as fragments ("\b\w+\b" splits "doesn't" -> doesn, t),
-# so the fragment forms are listed here. Bare "won" is deliberately excluded:
-# it collides with the past tense of "win". The apostrophe forms "can't"/
-# "won't" reduce to ("can"/"won", "t") pairs whose negation signal sits in the
-# dropped single-letter fragment — a documented limitation; "cannot", "can not"
-# and the informal "cant" all work.
+# The "\b\w+\b" tokenizer splits apostrophe contractions into fragments
+# ("can't" -> can, t; "doesn't" -> doesn, t), so fold_negated_contractions()
+# first glues a stray "t" fragment back onto its host word ("cant", "doesnt")
+# and the negators below are the folded forms. Bare "won" is deliberately
+# excluded: it collides with the past tense of "win" ("who won the world
+# cup"); only the folded "wont" counts as a negator.
 NEGATORS = {
     "not", "no", "never", "none", "nothing", "nobody", "neither", "nor",
-    "without", "cannot", "cant", "wont", "doesn", "don", "didn",
-    "isn", "aren", "wasn", "weren",
+    "without", "cannot", "cant", "wont", "shant", "dont", "doesnt", "didnt",
+    "isnt", "arent", "wasnt", "werent", "couldnt", "shouldnt", "wouldnt",
+    "mustnt", "havent", "hadnt", "neednt", "darent",
 }
 
 _PREFIX = "not_"
+
+# Closed set of auxiliary/modal stems that can precede the n't fragment in
+# English. Restricting the fold to these hosts keeps a stray single-letter
+# "t" from welding onto unrelated words ("k means" would otherwise produce
+# the garbage token "meanst").
+_AUX_HOSTS = {
+    # Contraction hosts exactly as the tokenizer emits them: "doesn't"
+    # arrives as ("doesn", "t"), "can't" as ("can", "t"), "won't" as
+    # ("won", "t"). Only these absorb a following "t" fragment.
+    "can", "won", "shan", "couldn", "shouldn", "wouldn", "mightn", "mustn",
+    "don", "doesn", "didn", "isn", "aren", "wasn", "weren", "haven", "hadn",
+    "needn", "daren",
+}
+
+
+def fold_negated_contractions(tokens: list) -> list:
+    """Glues an n't fragment onto its auxiliary host ("can" + "t" -> "cant").
+
+    Apostrophes are word boundaries for "\b\w+\b", so every English
+    X-n't contraction arrives as ("X", "t") and its negation signal sat in
+    the dropped single-letter fragment. Folding restores "cant"/"wont"/
+    "doesnt" as single tokens the NEGATORS set can actually match, in both
+    the router and the retriever. Only _AUX_HOSTS words absorb the fragment,
+    so unrelated tokens followed by a stray "t" stay intact.
+    """
+    out = []
+    for tok in tokens:
+        if tok == "t" and out and out[-1] in _AUX_HOSTS:
+            out[-1] += "t"
+        else:
+            out.append(tok)
+    return out
 
 
 def apply_negation_window(tokens: list, window: int = 3) -> list:
@@ -51,4 +84,5 @@ def apply_negation_window(tokens: list, window: int = 3) -> list:
 
 def has_negation(text: str) -> bool:
     """True if any standalone negator appears in the raw text."""
-    return any(re.search(r"\b" + re.escape(n) + r"\b", text.lower()) for n in NEGATORS)
+    words = re.findall(r"\b\w+\b", text.lower())
+    return any(w in NEGATORS for w in fold_negated_contractions(words))

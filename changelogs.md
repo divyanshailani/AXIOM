@@ -2,7 +2,18 @@
 
 All notable changes to the AXIOM project will be documented in this file.
 
-## [v2.4.0] - V2.4 Calibration & Multi-Turn (Current)
+## [v2.4.1] - V2.4.1 Hijack Fix, Contraction Negation, Memory Compaction (Current)
+### Fixed
+- **Context-retry hijack (measured)**: the V2.4 `standalone_floor` of 0.30 treated any accepted match scoring 0.15-0.30 as "cannot stand alone" and reinterpreted it through the previous turn's topic — "won't that work" (standalone `self_overview` 0.241) was hijacked into `ml_svm` (0.669) after an unrelated SVM turn. The floor is recalibrated to 0.20 from measurements: a genuine follow-up fragment gets accepted at 0.158 against its routed domain, while a hijackable standalone match scored 0.24 — 0.20 separates them. Accepted matches at or above the floor are now never reinterpreted; the follow-up rescues (`"and why is that useful"` 0.837, `"what about its variance"` 0.736) still pass.
+- **Apostrophe contractions in negation**: `can't`/`doesn't`/`won't` tokenize as `("can", "t")`/`("doesn", "t")`/`("won", "t")`, so the negation signal sat in the dropped `t` fragment — the documented V2.4 limitation. `negation.fold_negated_contractions()` now glues the fragment back onto its host (restricted to a closed set of contraction hosts, so a stray `t` after an unrelated word can't weld onto it), and `NEGATORS` holds the folded forms. `"explain when k-means doesn't work"` retrieves `ml_clustering` at 0.451 — identical to `"does not work"`. The fold runs in both the router and the retriever tokenizers, so bare `won` no longer leaks into the router vocabulary either.
+### Added
+- **Memory compaction tool**: `scripts/compact_memory.py --apply` squashes the `memory_patch.json` transaction log into `memory.json` (32 patches applied, log verified idempotent against the merged state, refuses while either memory file has uncommitted changes). The shipped log was compacted: `memory.json` at `memory_version` 2.4 now contains the full post-V2.4 state (26 intents across 5 domains), and boot replays an empty log. New intents should still ship as patches; compact once they're regression-tested.
+### Fixed (housekeeping)
+- Removed duplicate `"machine learning"` / `"artificial intelligence"` keys in `synonyms.ML_SYNONYMS` (second pair shadowed the first).
+- Deleted the stale root `test_edge_cases.py`: a V2.1 print-only script, collected zero pytest tests, fully superseded by `tests/`.
+- README now says how to actually run the project: the local `.venv/` (the system python has no numpy/pytest).
+
+## [v2.4.0] - V2.4 Calibration & Multi-Turn
 All threshold decisions in this release are measurement-driven: every golden
 question in memory and a battery of adversarial queries were scored through
 the live pipeline before picking numbers.

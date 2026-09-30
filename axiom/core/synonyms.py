@@ -14,8 +14,6 @@ ML_SYNONYMS = {
     "machine learning": ["ml"],
     "artificial intelligence": ["ai"],
     "neural network": ["nn"],
-    "machine learning": ["ml"],
-    "artificial intelligence": ["ai"]
 }
 
 # Casual / contraction forms that the byte-level stemmer cannot fold because

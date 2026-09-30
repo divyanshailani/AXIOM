@@ -7,7 +7,7 @@ from pathlib import Path
 import re
 from typing import Dict
 
-from axiom.core.negation import apply_negation_window
+from axiom.core.negation import apply_negation_window, fold_negated_contractions
 
 class NaiveBayesRouter:
     def __init__(self, memory_data: dict, config_path: Path):
@@ -50,7 +50,7 @@ class NaiveBayesRouter:
         return word
 
     def _tokenize(self, text: str) -> list:
-        words = re.findall(r'\b\w+\b', text.lower())
+        words = fold_negated_contractions(re.findall(r'\b\w+\b', text.lower()))
         tokens = []
         for w in words:
             if w in self.stopwords:

@@ -1,13 +1,19 @@
 # Copyright (c) 2026 Divyansh Ailani. All Rights Reserved.
 
-from axiom.core.negation import NEGATORS, apply_negation_window, has_negation
+from axiom.core.negation import (
+    NEGATORS,
+    apply_negation_window,
+    fold_negated_contractions,
+    has_negation,
+)
 
 
 def test_negator_words_are_covered():
-    # Contractions tokenize as fragments; the fragment forms must be present
-    # or "doesn't" style negation silently stops working.
-    for fragment in ("doesn", "don", "isn", "wasn", "cant", "cannot"):
-        assert fragment in NEGATORS
+    # Contractions arrive as ("X", "t") fragments and are folded by
+    # fold_negated_contractions; the folded forms must be negators or
+    # "doesn't"-style negation silently stops working.
+    for folded in ("doesnt", "dont", "isnt", "wasnt", "cant", "cannot", "wont", "didnt"):
+        assert folded in NEGATORS
 
 
 def test_negated_tokens_keep_plain_forms():
@@ -40,5 +46,19 @@ def test_has_negation_word_boundaries():
 
 
 def test_won_is_not_a_negator():
-    # 'won' collides with the past tense of win ("who won the world cup").
+    # 'won' collides with the past tense of win ("who won the world cup");
+    # only the folded "won't" form counts.
     assert "won" not in NEGATORS
+
+
+def test_fold_glues_n_t_fragment_onto_aux_hosts():
+    out = fold_negated_contractions(["can", "t", "you", "explain", "svm"])
+    assert "cant" in out and "t" not in out and "can" not in out
+    out = fold_negated_contractions(["it", "won", "t", "converge"])
+    assert "wont" in out
+
+
+def test_fold_leaves_unrelated_t_fragment_alone():
+    # A stray 't' after a non-auxiliary word must not weld onto it.
+    out = fold_negated_contractions(["k", "means", "t"])
+    assert out == ["k", "means", "t"]

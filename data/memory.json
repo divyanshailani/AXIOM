@@ -1,58 +1,245 @@
 {
-  "memory_version": "2.0",
+  "memory_version": "2.4",
   "domains": {
     "chit_chat": {
-      "router_keywords": ["hello", "hey", "hi", "good morning", "how are you", "who are you", "what is your name", "are you a robot", "what can you do", "help", "bye", "goodbye", "tell me a joke", "built", "made", "created", "who", "whats"],
+      "router_keywords": [
+        "hello",
+        "hey",
+        "hi",
+        "good morning",
+        "how are you",
+        "who are you",
+        "what is your name",
+        "are you a robot",
+        "what can you do",
+        "help",
+        "bye",
+        "goodbye",
+        "tell me a joke",
+        "built",
+        "made",
+        "created",
+        "who",
+        "whats",
+        "wrong",
+        "incorrect",
+        "mistake",
+        "bad",
+        "how are you doing",
+        "how are you today",
+        "how's it going",
+        "what's up",
+        "thanks",
+        "thank you",
+        "thx",
+        "axiom",
+        "capability",
+        "funny",
+        "greetings",
+        "welcome"
+      ],
       "intents": [
         {
           "intent_id": "gen_greeting",
-          "questions": ["hello", "hey", "hi", "good morning", "how are you"],
+          "questions": [
+            "hello",
+            "hey",
+            "hi",
+            "good morning",
+            "how are you",
+            "how are you doing",
+            "how are you today",
+            "how is it going",
+            "whats up",
+            "hi there",
+            "hey there"
+          ],
           "response_templates": [
             "Hello! I am AXIOM, a mathematical first-principles AI. How can I help you today?",
             "Greetings! I am ready to process your questions using classical algorithms."
           ],
-          "key_terms": ["hello", "hey", "hi", "greetings"]
+          "key_terms": [
+            "hello",
+            "hey",
+            "hi",
+            "greetings"
+          ]
         },
         {
           "intent_id": "gen_identity",
-          "questions": ["who are you", "what is your name", "are you a robot", "what are you", "who made you", "who created you", "who built you"],
+          "questions": [
+            "who are you",
+            "what is your name",
+            "are you a robot",
+            "what are you",
+            "who made you",
+            "who created you",
+            "who built you"
+          ],
           "response_templates": [
             "I am AXIOM (Zero-Training Math Engine). I was created as a deterministic system built on Naive Bayes and Markov Chains.",
             "My name is AXIOM. I was built to be a transparent, mathematically rigorous AI assistant built entirely without black-box deep learning."
           ],
-          "key_terms": ["who", "name", "robot", "axiom", "made", "created", "built"]
+          "key_terms": [
+            "who",
+            "name",
+            "robot",
+            "axiom",
+            "made",
+            "created",
+            "built"
+          ]
         },
         {
           "intent_id": "gen_capability",
-          "questions": ["what can you do", "help me", "how can you help", "what do you know"],
+          "questions": [
+            "what can you do",
+            "help me",
+            "how can you help",
+            "what do you know"
+          ],
           "response_templates": [
             "I can explain machine learning concepts (like SVMs, Regression, and Trees), discuss the history of AI (like Turing and Rosenblatt), and explain my own mathematical architecture.",
             "I specialize in explaining classical Machine Learning algorithms. You can ask me how Decision Trees, Clustering, or my own Naive Bayes systems work."
           ],
-          "key_terms": ["help", "do", "capability"]
+          "key_terms": [
+            "help",
+            "do",
+            "capability"
+          ]
         },
         {
           "intent_id": "gen_joke",
-          "questions": ["tell me a joke", "make me laugh"],
+          "questions": [
+            "tell me a joke",
+            "make me laugh"
+          ],
           "response_templates": [
             "Why did the Naive Bayes classifier get confused? Because it assumed all the punchlines were independent of the setup!",
             "I would tell you a joke about a Markov Chain, but it depends entirely on what I just said."
           ],
-          "key_terms": ["joke", "laugh", "funny"]
+          "key_terms": [
+            "joke",
+            "laugh",
+            "funny"
+          ]
         },
         {
           "intent_id": "gen_farewell",
-          "questions": ["bye", "goodbye", "see you later", "quit", "exit"],
+          "questions": [
+            "bye",
+            "goodbye",
+            "see you later",
+            "quit",
+            "exit"
+          ],
           "response_templates": [
             "Goodbye! Shutting down the mathematical matrices.",
             "Farewell! May your vectors always be orthogonal."
           ],
-          "key_terms": ["bye", "goodbye", "exit"]
+          "key_terms": [
+            "bye",
+            "goodbye",
+            "exit"
+          ]
+        },
+        {
+          "intent_id": "gen_acknowledgement",
+          "questions": [
+            "i see",
+            "got it",
+            "okay",
+            "alright",
+            "understood",
+            "makes sense"
+          ],
+          "response_templates": [
+            "Glad that makes sense.",
+            "Understood. Let me know if you have another question.",
+            "Acknowledged. What would you like to explore next?"
+          ],
+          "key_terms": [
+            "see",
+            "got",
+            "okay",
+            "understood"
+          ]
+        },
+        {
+          "intent_id": "gen_feedback",
+          "questions": [
+            "you are wrong",
+            "you were wrong",
+            "that is incorrect",
+            "incorrect",
+            "my bad",
+            "i made a mistake",
+            "sorry wrong question"
+          ],
+          "response_templates": [
+            "No problem. Let me know what you'd like to know instead.",
+            "Understood. What should I have said?",
+            "Got it. Let's correct course. What's your actual question?"
+          ],
+          "key_terms": [
+            "wrong",
+            "incorrect",
+            "mistake",
+            "bad"
+          ]
+        },
+        {
+          "intent_id": "gen_thanks",
+          "questions": [
+            "thanks",
+            "thank you",
+            "thx",
+            "thank you very much",
+            "appreciate it",
+            "ty"
+          ],
+          "response_templates": [
+            "You're welcome! Ask me about any machine learning topic anytime.",
+            "Happy to help. What would you like to explore next?"
+          ],
+          "key_terms": [
+            "thanks",
+            "thank",
+            "welcome",
+            "appreciate"
+          ]
         }
       ]
     },
     "self": {
-      "router_keywords": ["you", "yourself", "how do you", "your brain", "your memory", "understand"],
+      "router_keywords": [
+        "you",
+        "yourself",
+        "how do you",
+        "your brain",
+        "your memory",
+        "understand",
+        "architecture",
+        "explain",
+        "how are you built",
+        "your design",
+        "your code",
+        "your logic",
+        "your pipeline",
+        "pipeline",
+        "flow",
+        "steps",
+        "process",
+        "angle",
+        "tfidf",
+        "synonym augmentation",
+        "matrix",
+        "frequency",
+        "route",
+        "raw text",
+        "augmentation",
+        "probability"
+      ],
       "intents": [
         {
           "intent_id": "self_cosine_similarity",
@@ -66,7 +253,14 @@
             "I convert your question into a vector using word frequencies. Then I calculate the cosine angle between your vector and every question in my memory. The smallest angle wins.",
             "Using linear algebra, I measure the cosine similarity between your input TF-IDF vector and my stored knowledge vectors. A smaller angle means a closer match."
           ],
-          "key_terms": ["vector", "cosine", "angle", "similarity", "frequency", "tfidf"]
+          "key_terms": [
+            "vector",
+            "cosine",
+            "angle",
+            "similarity",
+            "frequency",
+            "tfidf"
+          ]
         },
         {
           "intent_id": "self_markov_chain",
@@ -80,7 +274,14 @@
             "I build a probability matrix from my training text. For any given word, I roll a dice weighted by which words usually follow it. I chain these dice rolls until I reach a stopping state.",
             "My generator uses a Markov chain. I look at the previous one or two words, check my probability matrix, and select the next word based on historical frequency."
           ],
-          "key_terms": ["markov", "probability", "matrix", "chain", "next word", "frequency"]
+          "key_terms": [
+            "markov",
+            "probability",
+            "matrix",
+            "chain",
+            "next word",
+            "frequency"
+          ]
         },
         {
           "intent_id": "self_naive_bayes",
@@ -93,7 +294,14 @@
             "My domain router uses a Naive Bayes classifier. It calculates the probability that your question belongs to each domain based on word frequencies, then sends you to the most likely specialist.",
             "I classify your intent into a domain using Bayes theorem. I assume each word contributes independently to the probability of a topic."
           ],
-          "key_terms": ["naive bayes", "classifier", "probability", "domain", "router", "bayes"]
+          "key_terms": [
+            "naive bayes",
+            "classifier",
+            "probability",
+            "domain",
+            "router",
+            "bayes"
+          ]
         },
         {
           "intent_id": "self_overview",
@@ -101,18 +309,106 @@
             "how do you work",
             "explain your architecture",
             "what algorithms power you",
-            "are you a neural network"
+            "are you a neural network",
+            "how are you built",
+            "what is your design"
           ],
           "response_templates": [
             "I am not a neural network. I am a pipeline of classical algorithms. A Naive Bayes router picks a domain, TF-IDF cosine similarity matches your intent, and a Markov chain generates my response.",
             "My architecture is three layers. First, a Bayesian classifier routes your question. Second, a TF-IDF vectorizer retrieves the closest memory. Third, a probability matrix generates the reply word by word."
           ],
-          "key_terms": ["pipeline", "naive bayes", "cosine", "markov", "classical", "not neural", "tfidf"]
+          "key_terms": [
+            "pipeline",
+            "naive bayes",
+            "cosine",
+            "markov",
+            "classical",
+            "not neural",
+            "tfidf"
+          ]
+        },
+        {
+          "intent_id": "self_pipeline",
+          "questions": [
+            "how do you work",
+            "what happens when i ask you a question",
+            "walk me through your pipeline",
+            "how does my question get processed",
+            "what is your end to end flow"
+          ],
+          "response_templates": [
+            "When you ask a question, I expand synonyms, route the words through a Naive Bayes domain classifier, match your query against my memory with TF-IDF cosine similarity, and finally return a response template from the best matching intent.",
+            "My pipeline is: synonym augmentation, Bayesian domain routing, TF-IDF intent retrieval, then a hand-written response template from my curated memory. Every step is deterministic and inspectable."
+          ],
+          "key_terms": [
+            "pipeline",
+            "steps",
+            "process",
+            "flow",
+            "synonym",
+            "raw",
+            "augmentation",
+            "route"
+          ]
         }
       ]
     },
     "classical_ml": {
-      "router_keywords": ["regression", "tree", "svm", "cluster", "algorithm", "model", "classify", "predict", "supervised", "unsupervised", "maths", "math", "statistics", "data science", "xgboost", "machine learning", "ml", "can", "tell", "know", "please"],
+      "router_keywords": [
+        "regression",
+        "tree",
+        "svm",
+        "cluster",
+        "algorithm",
+        "model",
+        "classify",
+        "predict",
+        "supervised",
+        "unsupervised",
+        "maths",
+        "math",
+        "statistics",
+        "data science",
+        "xgboost",
+        "machine learning",
+        "ml",
+        "can",
+        "tell",
+        "know",
+        "please",
+        "cross entropy",
+        "auc",
+        "roc",
+        "area under curve",
+        "receiver operating characteristic",
+        "random forest",
+        "random forests",
+        "bagging",
+        "ensemble",
+        "gradient boosting",
+        "boosting",
+        "hyperplane",
+        "margin",
+        "centroid",
+        "euclidean distance",
+        "gini index",
+        "convergence",
+        "decision boundary",
+        "classification",
+        "coefficient",
+        "residual",
+        "continuous output",
+        "lazy learning",
+        "majority vote",
+        "bootstrap sampling",
+        "unsupervised grouping",
+        "probability",
+        "node",
+        "separation",
+        "optimizer",
+        "loss minimization",
+        "step size"
+      ],
       "intents": [
         {
           "intent_id": "ml_overview",
@@ -128,7 +424,13 @@
             "Machine Learning is a subset of Artificial Intelligence that uses statistical algorithms to learn patterns from data, rather than relying on explicitly programmed rules.",
             "Classical ML involves algorithms like Regression, SVMs, and Decision Trees to classify data or predict continuous outcomes using pure mathematics and statistics."
           ],
-          "key_terms": ["machine learning", "ai", "maths", "algorithms", "data science"]
+          "key_terms": [
+            "machine learning",
+            "ai",
+            "maths",
+            "algorithms",
+            "data science"
+          ]
         },
         {
           "intent_id": "ml_linear_regression",
@@ -141,20 +443,41 @@
             "Linear regression finds a straight line that minimizes the total squared distance to all observed data points. It assumes a linear relationship between an input feature and a target value.",
             "It models continuous outcomes by fitting a linear equation. The algorithm adjusts coefficients to minimize the residual sum of squares between predicted and actual values."
           ],
-          "key_terms": ["linear", "regression", "least squares", "residual", "coefficient", "continuous"]
+          "key_terms": [
+            "linear",
+            "regression",
+            "least squares",
+            "residual",
+            "coefficient",
+            "continuous"
+          ]
         },
         {
           "intent_id": "ml_logistic_regression",
           "questions": [
             "what is logistic regression",
             "explain logistic regression",
-            "how does the sigmoid function operate"
+            "how does the sigmoid function operate",
+            "what is binary cross entropy",
+            "explain cross entropy loss",
+            "what is AUC",
+            "what is ROC",
+            "explain AUC and ROC",
+            "what is the area under curve",
+            "receiver operating characteristic"
           ],
           "response_templates": [
             "Logistic regression predicts probabilities using the sigmoid function, which squeezes any real number into a range between zero and one. It is used for binary classification.",
             "Despite its name, it is a classification algorithm. It applies a logistic function to a linear combination of input features to estimate the probability of a class label."
           ],
-          "key_terms": ["logistic", "sigmoid", "probability", "binary", "classification", "boundary"]
+          "key_terms": [
+            "logistic",
+            "sigmoid",
+            "probability",
+            "binary",
+            "classification",
+            "boundary"
+          ]
         },
         {
           "intent_id": "ml_decision_trees",
@@ -163,13 +486,29 @@
             "how do decision trees operate",
             "explain random forests",
             "what is entropy in a decision tree",
-            "explain gradient boosting"
+            "explain gradient boosting",
+            "what is a tree",
+            "how do trees split data",
+            "what is a leaf in a decision tree",
+            "what is xgboost",
+            "explain xgboost",
+            "what is gradient boosting"
           ],
           "response_templates": [
             "A decision tree splits data at each node by asking a question about a feature. It recursively partitions the space until it reaches a leaf node containing a prediction.",
             "It creates a flowchart of decisions. Advanced versions like Random Forests use many trees, and algorithms like XGBoost use gradient boosting to sequentially correct errors of previous trees."
           ],
-          "key_terms": ["tree", "split", "node", "entropy", "gini", "leaf", "xgboost", "boosting", "forest"]
+          "key_terms": [
+            "tree",
+            "split",
+            "node",
+            "entropy",
+            "gini",
+            "leaf",
+            "xgboost",
+            "boosting",
+            "forest"
+          ]
         },
         {
           "intent_id": "ml_svm",
@@ -183,7 +522,15 @@
             "An SVM finds the optimal hyperplane that maximizes the margin between two classes. The data points closest to the boundary are called support vectors, and they define the decision surface.",
             "Support vector machines map data into a higher dimensional space where a linear separation becomes possible. The kernel trick computes this mapping without explicitly calculating the coordinates."
           ],
-          "key_terms": ["svm", "hyperplane", "margin", "support vector", "kernel", "trick", "separation"]
+          "key_terms": [
+            "svm",
+            "hyperplane",
+            "margin",
+            "support vector",
+            "kernel",
+            "trick",
+            "separation"
+          ]
         },
         {
           "intent_id": "ml_clustering",
@@ -197,7 +544,15 @@
             "Clustering is unsupervised learning. It groups data points by similarity without predefined labels. K-means iteratively assigns points to the nearest centroid and updates the center.",
             "K-means begins with random centroids. Each point joins the cluster of its nearest center. The centroids then shift to the mean of their assigned points, repeating until convergence."
           ],
-          "key_terms": ["clustering", "k-means", "centroid", "unsupervised", "similarity", "convergence", "group"]
+          "key_terms": [
+            "clustering",
+            "k-means",
+            "centroid",
+            "unsupervised",
+            "similarity",
+            "convergence",
+            "group"
+          ]
         },
         {
           "intent_id": "ml_knn",
@@ -210,12 +565,84 @@
             "K-nearest neighbors stores all training data and classifies a new point by majority vote of its K closest neighbors in feature space. It is a lazy learner.",
             "It makes no assumptions about the underlying data distribution. It simply measures distance, usually Euclidean, between the query point and the stored examples."
           ],
-          "key_terms": ["knn", "nearest neighbor", "distance", "euclidean", "majority vote", "lazy"]
+          "key_terms": [
+            "knn",
+            "nearest neighbor",
+            "distance",
+            "euclidean",
+            "majority vote",
+            "lazy"
+          ]
+        },
+        {
+          "intent_id": "ml_random_forests",
+          "questions": [
+            "explain random forests",
+            "what is a random forest",
+            "what are random forests",
+            "how do random forests work",
+            "what is bagging in random forests",
+            "how does a random forest classifier work"
+          ],
+          "response_templates": [
+            "A random forest trains many decision trees on random subsets of the data and random subsets of features, then combines their votes. Averaging over many decorrelated trees reduces overfitting and variance.",
+            "Random forests are an ensemble method. Each tree is grown on a bootstrap sample of the data with random feature subsets, and the final prediction is the majority vote of all the trees."
+          ],
+          "key_terms": [
+            "random forest",
+            "forest",
+            "bagging",
+            "ensemble",
+            "bootstrap",
+            "trees"
+          ]
+        },
+        {
+          "intent_id": "ml_gradient_descent",
+          "questions": [
+            "what is gradient descent",
+            "explain gradient descent",
+            "how does gradient descent work",
+            "whats the deal with gradient descent",
+            "what is stochastic gradient descent",
+            "explain sgd",
+            "what is a learning rate"
+          ],
+          "response_templates": [
+            "Gradient descent is an optimization algorithm: it repeatedly nudges model parameters downhill along the negative gradient until a loss function reaches a minimum.",
+            "In classical machine learning, gradient descent trains models like logistic regression by minimizing loss step by step. The learning rate controls how large each step is.",
+            "Stochastic gradient descent (SGD) is the variant that updates weights from one sample or a small batch at a time instead of the full dataset, trading smoothness for speed."
+          ],
+          "key_terms": [
+            "gradient descent",
+            "sgd",
+            "learning rate",
+            "optimizer",
+            "loss minimization",
+            "step size"
+          ]
         }
       ]
     },
     "history": {
-      "router_keywords": ["who", "when", "history", "invented", "created", "rosenblatt", "turing", "vapnik", "lecun", "hinton"],
+      "router_keywords": [
+        "who",
+        "when",
+        "history",
+        "invented",
+        "created",
+        "rosenblatt",
+        "turing",
+        "vapnik",
+        "lecun",
+        "hinton",
+        "1950",
+        "1957",
+        "cornell aeronautical laboratory",
+        "imitation game",
+        "neuron weights",
+        "think"
+      ],
       "intents": [
         {
           "intent_id": "hist_perceptron",
@@ -228,7 +655,14 @@
             "Frank Rosenblatt built the perceptron in 1957 at the Cornell Aeronautical Laboratory. It was an electronic model of a biological neuron and could learn weights from data.",
             "The perceptron was the first machine learning algorithm that could iteratively adjust its weights based on classification errors. It sparked the first wave of AI optimism."
           ],
-          "key_terms": ["rosenblatt", "perceptron", "1957", "cornell", "neuron", "weights"]
+          "key_terms": [
+            "rosenblatt",
+            "perceptron",
+            "1957",
+            "cornell",
+            "neuron",
+            "weights"
+          ]
         },
         {
           "intent_id": "hist_turing",
@@ -241,12 +675,40 @@
             "Alan Turing proposed the imitation game in 1950. A machine passes if a human cannot distinguish it from another human through text conversation alone.",
             "Turing asked whether machines can think. He suggested that if a machine behaves indistinguishably from a human, we should grant it intelligence by operational definition."
           ],
-          "key_terms": ["turing", "imitation game", "1950", "test", "think", "machine"]
+          "key_terms": [
+            "turing",
+            "imitation game",
+            "1950",
+            "test",
+            "think",
+            "machine"
+          ]
         }
       ]
     },
     "modern_context": {
-      "router_keywords": ["transformer", "attention", "chatgpt", "deep learning", "neural network", "llm", "gpt", "large language"],
+      "router_keywords": [
+        "transformer",
+        "attention",
+        "chatgpt",
+        "deep learning",
+        "neural network",
+        "llm",
+        "gpt",
+        "large language",
+        "DL",
+        "self attention",
+        "attention mechanism",
+        "gpt model",
+        "language model",
+        "large language models",
+        "transformers",
+        "black box",
+        "inspectable",
+        "parallel processing",
+        "parameters count",
+        "unlike"
+      ],
       "intents": [
         {
           "intent_id": "mod_transformers",
@@ -254,13 +716,26 @@
             "what are transformers",
             "how does chatgpt work",
             "what is attention in ai",
-            "explain large language models"
+            "explain large language models",
+            "what is DL",
+            "explain DL",
+            "what is self attention",
+            "what is an attention mechanism",
+            "tell me about transformer architecture",
+            "how does the transformer encoder work"
           ],
           "response_templates": [
             "Transformers use a mechanism called self-attention to weigh the importance of every word in a sentence against every other word simultaneously. They process sequences in parallel.",
             "Unlike my Markov chains, which only look back one or two words, transformers compute relationships across entire paragraphs using attention scores and billions of parameters."
           ],
-          "key_terms": ["transformer", "attention", "parallel", "parameters", "chatgpt", "unlike me"]
+          "key_terms": [
+            "transformer",
+            "attention",
+            "parallel",
+            "parameters",
+            "chatgpt",
+            "unlike me"
+          ]
         },
         {
           "intent_id": "mod_vs_classical",
@@ -273,7 +748,14 @@
             "Deep learning uses layered neural networks with millions of learned weights. I use explicit probability matrices and vector geometry. Both are mathematical models, but mine is fully inspectable.",
             "Neural networks are black boxes. My cosine similarity scores and Markov probability tables are human-readable. You can see exactly why I chose every word."
           ],
-          "key_terms": ["neural network", "deep learning", "black box", "inspectable", "difference", "parameters"]
+          "key_terms": [
+            "neural network",
+            "deep learning",
+            "black box",
+            "inspectable",
+            "difference",
+            "parameters"
+          ]
         }
       ]
     }

@@ -66,12 +66,15 @@ class AxiomOrchestrator:
         # Context retry: when standalone retrieval fails or stays weak, the
         # previous user query is concatenated as a second attempt so pronoun
         # follow-ups ("what about its variance?") resolve against the
-        # established topic. Gates below keep this from hijacking queries that
-        # already stand on their own.
+        # established topic. V2.4.1 recalibrated the gate from measurements:
+        # a legit follow-up fragment scored 0.158 (accepted) against its
+        # routed domain while a hijackable standalone match scored 0.24, so
+        # the floor sits at 0.20 — accepted matches at or above it are never
+        # reinterpreted (see chat()).
         retry_cfg = self.config.get('context_retry', {})
         self.context_retry_enabled = bool(retry_cfg.get('enabled', True))
         self.context_retry_min_score = float(retry_cfg.get('min_score', 0.35))
-        self.context_retry_floor = float(retry_cfg.get('standalone_floor', 0.30))
+        self.context_retry_floor = float(retry_cfg.get('standalone_floor', 0.20))
 
         miss_log_relpath = self.config.get('miss_log_path')
         self.miss_log_path = (base_dir / miss_log_relpath) if miss_log_relpath else None
@@ -131,16 +134,15 @@ class AxiomOrchestrator:
     def _retrieve(self, prompt: str, domain_name: str) -> dict:
         return self._retrievers[domain_name].find_intent_detailed(prompt)
 
-    def _context_retry(self, contextual_prompt: str, augmented_prompt: str,
-                       previous_prompt: str, primary_domain: str,
-                       primary_score: float) -> dict:
+    def _context_retry(self, contextual_prompt: str, previous_prompt: str,
+                       primary_domain: str, primary_score: float) -> dict:
         """Second retrieval pass over the previous query + current one.
 
-        Only runs when standalone matching already failed or stayed weak. Two
-        gates keep it from hijacking legitimate standalone answers: the merged
-        match must clear the raised min_score bar AND hold at least twice the
+        Only runs when standalone matching produced no accepted intent. Two
+        gates still keep it from overruling a topic switch: the merged match
+        must clear the raised min_score bar AND hold at least twice the
         primary evidence (a real follow-up fragment collapses without its
-        topic; a complete question does not).
+        topic; a partially-matching question keeps its own answer).
         """
         if not self.context_retry_enabled or previous_prompt is None:
             return None
@@ -215,14 +217,15 @@ class AxiomOrchestrator:
                 domain_conf = domain_probs.get("chit_chat", 0.0)
 
         # Context retry: resolve follow-up fragments against the previous topic.
-        # Fires only when the query failed to stand on its own (score below
-        # standalone_floor) and is not itself conversational — chit_chat turns
-        # belong to the social flow, not the topic thread, and must never be
-        # reinterpreted through the previous topic's vocabulary.
+        # Fires when standalone retrieval produced no accepted intent, or an
+        # accepted one scoring below the floor (measured: 0.158 legit fragment
+        # vs 0.24 hijackable match). Chit_chat turns belong to the social flow,
+        # not the topic thread, and must never be reinterpreted through the
+        # previous topic's vocabulary.
         if (self.context_retry_enabled
-                and score < self.context_retry_floor
+                and (not detail["accepted"] or score < self.context_retry_floor)
                 and domain_name != "chit_chat"):
-            retry = self._context_retry(contextual_prompt, augmented_prompt,
+            retry = self._context_retry(contextual_prompt,
                                         previous_prompt, domain_name, score)
             if retry is not None:
                 domain_name = retry["domain"]

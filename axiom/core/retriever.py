@@ -9,7 +9,7 @@ from typing import Tuple
 import numpy as np
 from pathlib import Path
 
-from axiom.core.negation import apply_negation_window
+from axiom.core.negation import apply_negation_window, fold_negated_contractions
 
 
 class IntentRetriever:
@@ -57,7 +57,7 @@ class IntentRetriever:
         self._build_tfidf_model()
 
     def _tokenize(self, text: str) -> list:
-        words = re.findall(r"\b\w+\b", text.lower())
+        words = fold_negated_contractions(re.findall(r"\b\w+\b", text.lower()))
         filtered = [w for w in words if w not in self.stopwords]
         # A query like 'how are you' is 100% stopwords in some domains; keep the
         # raw words so the greeting still maps onto chit_chat's gen_greeting.
